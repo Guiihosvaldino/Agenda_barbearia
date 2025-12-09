@@ -2,56 +2,91 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Confirmação - Barbearia</title>
+    <title>Confirmação - Barbearia 💈</title>
+
+    <style>
+    /* ——— IDENTIDADE VISUAL UNIFICADA ——— */
+    body {
+        margin: 0;
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        font-family: 'Segoe UI', Arial, sans-serif;
+        color: #fff;
+        min-height: 100vh;
+    }
+
+    .menu {
+        background: #0d2a52;
+        padding: 14px 25px;
+        display: flex;
+        gap: 25px;
+        font-size: 1.1em;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+    }
+
+    .menu a {
+        color: #fff;
+        text-decoration: none;
+        padding: 6px 12px;
+        font-weight: bold;
+        border-radius: 6px;
+    }
+
+    .menu a:hover {
+        background: #1e3c72;
+    }
+
+    .container {
+        background: #ffffff;
+        max-width: 600px;
+        margin: 60px auto;
+        padding: 30px 35px;
+        border-radius: 16px;
+        color: #222;
+        box-shadow: 0 8px 22px rgba(0,0,0,0.25);
+        text-align: center;
+    }
+
+    h2 {
+        color: #1e3c72;
+        margin-bottom: 20px;
+        font-size: 2em;
+    }
+
+    p {
+        color: #333;
+        font-size: 1.1em;
+        margin-bottom: 25px;
+    }
+
+    a.btn {
+        display: inline-block;
+        text-decoration: none;
+        color: #fff;
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        padding: 12px 28px;
+        border-radius: 8px;
+        font-weight: bold;
+        transition: 0.2s;
+    }
+
+    a.btn:hover {
+        transform: scale(1.03);
+    }
+    </style>
 </head>
 <body>
+
+<div class="menu">
+    <a href="index.php">⟵ Voltar</a>
+</div>
+
+<div class="container">
     <h2>✅ Agendamento realizado com sucesso!</h2>
     <p>Seu horário foi registrado no sistema. Aguarde a confirmação do salão.</p>
-    <a href="index.php">Voltar para início</a>
-    <style>
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        h2 {
-            color: #2d6a4f;
-            background: #d8f3dc;
-            padding: 20px 40px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
-            margin-bottom: 16px;
-            font-size: 2rem;
-        }
-        p {
-            color: #333;
-            font-size: 1.1rem;
-            margin-bottom: 24px;
-            background: #fff;
-            padding: 16px 32px;
-            border-radius: 8px;
-            box-shadow: 0 1px 4px rgba(44, 62, 80, 0.05);
-        }
-        a {
-            display: inline-block;
-            text-decoration: none;
-            color: #fff;
-            background: #40916c;
-            padding: 12px 28px;
-            border-radius: 8px;
-            font-weight: bold;
-            transition: background 0.2s;
-            box-shadow: 0 2px 6px rgba(44, 62, 80, 0.07);
-        }
-        a:hover {
-            background: #2d6a4f;
-        }
-    </style>
+    <a class="btn" href="index.php">Voltar para início</a>
+</div>
+
 </body>
 </html>

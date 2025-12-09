@@ -65,28 +65,28 @@ $totalGeral = calcularFinanceiroTotal($ano, $mes);
             color: #fff;
         }
 
-        .menu {
-            background: #0d2a52;
-            padding: 12px 20px;
-            display: flex;
-            gap: 20px;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
+       .menu {
+    background: #0d2a52;
+    padding: 14px 25px;
+    display: flex;
+    gap: 25px;
+    font-size: 1.1em;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
 
-        .menu a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 1.1em;
-            font-weight: bold;
-            padding: 6px 10px;
-            border-radius: 6px;
-        }
+.menu a {
+    color: #fff;
+    text-decoration: none;
+    padding: 6px 12px;
+    font-weight: bold;
+    border-radius: 6px;
+}
 
-        .menu a:hover {
-            background: #1e3c72;
-        }
+.menu a:hover {
+    background: #1e3c72;
+}
 
         .container {
             background: #fff;
@@ -179,6 +179,7 @@ $totalGeral = calcularFinanceiroTotal($ano, $mes);
     <a href="financeiro.php">💰 Financeiro</a>
     <a href="admin_agendar.php">➕ Novo Agendamento</a>
     <a href="admin_profissionais.php">👤 Profissionais</a>
+    <a href="admin_servicos.php">💈 Serviços</a>
 </div>
 
 <div class="container">

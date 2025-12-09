@@ -5,28 +5,27 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require_once("../../backend/admin.php");
-require_once("../../backend/profissional.php");
+require_once("../../backend/servico.php"); // Crie funções para servico: listar, adicionar, editar, excluir
 
 // Mensagens
 $msgSucesso = "";
 $msgErro = "";
 
 // -----------------------------
-// SALVAR NOVO PROFISSIONAL
+// SALVAR NOVO SERVIÇO
 // -----------------------------
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['acao']) && $_POST['acao'] == "novo") {
 
-    $nome         = $_POST['nome'];
-    $especialidade = $_POST['especialidade'];
-    $email        = $_POST['email'];
-    $senha        = $_POST['senha'];
+    $nome   = $_POST['nome'];
+    $duracao = $_POST['duracao'];
+    $valor  = $_POST['valor'];
 
-    if ($nome && $especialidade && $email && $senha) {
+    if ($nome && $duracao && $valor) {
 
-        if (adicionarProfissional($nome, $especialidade, $email, $senha)) {
-            $msgSucesso = "Profissional cadastrado com sucesso!";
+        if (adicionarServico($nome, $duracao, $valor)) {
+            $msgSucesso = "Serviço cadastrado com sucesso!";
         } else {
-            $msgErro = "Erro ao cadastrar profissional! Este e-mail já existe.";
+            $msgErro = "Erro ao cadastrar serviço!";
         }
 
     } else {
@@ -36,46 +35,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['acao']) && $_POST['aca
 
 
 // -----------------------------
-// EDITAR PROFISSIONAL
+// EDITAR SERVIÇO
 // -----------------------------
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['acao']) && $_POST['acao'] == "editar") {
 
     $id      = $_POST['id'];
     $nome    = $_POST['nome'];
-    $especialidade = $_POST['especialidade'];
+    $duracao = $_POST['duracao'];
+    $valor   = $_POST['valor'];
 
-    if (editarProfissional($id, $nome, $especialidade)) {
-        $msgSucesso = "Profissional atualizado com sucesso!";
+    if (editarServico($id, $nome, $duracao, $valor)) {
+        $msgSucesso = "Serviço atualizado com sucesso!";
     } else {
-        $msgErro = "Erro ao atualizar profissional!";
+        $msgErro = "Erro ao atualizar serviço!";
     }
 }
 
 
 // -----------------------------
-// EXCLUIR PROFISSIONAL
+// EXCLUIR SERVIÇO
 // -----------------------------
 if (isset($_GET['excluir'])) {
 
     $id = $_GET['excluir'];
 
-    if (excluirProfissional($id)) {
-        $msgSucesso = "Profissional removido com sucesso!";
+    if (excluirServico($id)) {
+        $msgSucesso = "Serviço removido com sucesso!";
     } else {
-        $msgErro = "Erro ao excluir profissional!";
+        $msgErro = "Erro ao excluir serviço!";
     }
 }
 
 
-// Lista de profissionais
-$profissionais = listarProfissionaisAdmin();
+// Lista de serviços
+$servicos = listarServicosAdmin();
 
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Profissionais - Admin</title>
+    <title>Serviços - Admin 💈</title>
 
 <style>
 /* ——— MESMA IDENTIDADE VISUAL ——— */
@@ -86,6 +86,7 @@ body {
     font-family: 'Segoe UI', Arial, sans-serif;
     color: #fff;
 }
+
 .menu {
     background: #0d2a52;
     padding: 14px 25px;
@@ -230,7 +231,7 @@ tr:nth-child(odd) { background: #ffffff; }
 
 <div class="container">
 
-    <h2>👤 Cadastro de Profissionais</h2>
+    <h2>💈 Cadastro de Serviços</h2>
 
     <?php if ($msgSucesso): ?>
         <div class="msg-sucesso"><?= $msgSucesso ?></div>
@@ -241,40 +242,38 @@ tr:nth-child(odd) { background: #ffffff; }
     <?php endif; ?>
 
 
-    <!-- FORM NOVO PROFISSIONAL -->
+    <!-- FORM NOVO SERVIÇO -->
     <form method="POST">
         <input type="hidden" name="acao" value="novo">
 
-        <input type="text" name="nome" placeholder="Nome do Profissional" required>
-        <input type="text" name="especialidade" placeholder="Especialidade" required>
-        <input type="email" name="email" placeholder="E-mail" required>
-        <input type="password" name="senha" placeholder="Senha" required>
+        <input type="text" name="nome" placeholder="Nome do Serviço" required>
+        <input type="number" name="duracao" placeholder="Duração (minutos)" required>
+        <input type="text" name="valor" placeholder="Valor (R$)" required>
 
-        <button type="submit">Cadastrar Profissional</button>
+        <button type="submit">Cadastrar Serviço</button>
     </form>
-    
 
 
-
-
-    <h3>📋 Profissionais Cadastrados</h3>
+    <h3>📋 Serviços Cadastrados</h3>
 
     <table>
         <tr>
             <th>Nome</th>
-            <th>Especialidade</th>
+            <th>Duração (min)</th>
+            <th>Valor (R$)</th>
             <th>Ações</th>
         </tr>
 
-        <?php foreach ($profissionais as $p): ?>
+        <?php foreach ($servicos as $s): ?>
         <tr>
-            <td><?= $p['nome'] ?></td>
-            <td><?= $p['especialidade'] ?></td>
+            <td><?= $s['nome'] ?></td>
+            <td><?= $s['duracao'] ?></td>
+            <td><?= number_format($s['valor'],2,',','.') ?></td>
 
             <td>
-                <a class="btn-edit" href="admin_profissionais.php?editar=<?= $p['id_profissional'] ?>">Editar</a>
-                <a class="btn-delete" href="admin_profissionais.php?excluir=<?= $p['id_profissional'] ?>"
-                   onclick="return confirm('Tem certeza que deseja excluir este profissional?')">
+                <a class="btn-edit" href="admin_servicos.php?editar=<?= $s['id_servico'] ?>">Editar</a>
+                <a class="btn-delete" href="admin_servicos.php?excluir=<?= $s['id_servico'] ?>"
+                   onclick="return confirm('Tem certeza que deseja excluir este serviço?')">
                    Excluir
                 </a>
             </td>
@@ -282,31 +281,36 @@ tr:nth-child(odd) { background: #ffffff; }
         <?php endforeach; ?>
 
     </table>
+
 <?php 
 // SE CLICOU EM EDITAR — MOSTRA O FORMULÁRIO
 if (isset($_GET['editar'])):
 
     $idEditar = $_GET['editar'];
-    $prof = buscarProfissionalPorId($idEditar);
+    $serv = buscarServicoPorId($idEditar);
 
-    if ($prof):
+    if ($serv):
 ?>
 
 <br><br>
 
-<h3>✏ Editar Profissional</h3>
+<h3>✏ Editar Serviço</h3>
 
 <form method="POST">
     <input type="hidden" name="acao" value="editar">
-    <input type="hidden" name="id" value="<?= $prof['id_profissional'] ?>">
+    <input type="hidden" name="id" value="<?= $serv['id_servico'] ?>">
 
     <input type="text" name="nome" 
-           value="<?= $prof['nome'] ?>" 
-           placeholder="Nome" required>
+           value="<?= $serv['nome'] ?>" 
+           placeholder="Nome do Serviço" required>
 
-    <input type="text" name="especialidade" 
-           value="<?= $prof['especialidade'] ?>" 
-           placeholder="Especialidade" required>
+    <input type="number" name="duracao" 
+           value="<?= $serv['duracao'] ?>" 
+           placeholder="Duração (minutos)" required>
+
+    <input type="text" name="valor" 
+           value="<?= $serv['valor'] ?>" 
+           placeholder="Valor (R$)" required>
 
     <button type="submit">Salvar Alterações</button>
 </form>

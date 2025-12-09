@@ -40,20 +40,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         .container {
-            background: #ffffff;
-            width: 360px;
-            padding: 30px 26px;
-            border-radius: 14px;
-            box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+        
+            background: #fff;
             color: #333;
+            width: 360px;
+            padding: 35px 30px;
+            border-radius: 14px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+            text-align: center;
         }
 
         h1 {
-            text-align: center;
-            margin-bottom: 5px;
-            font-size: 2em;
+            margin: 0 0 10px;
             color: #1e3c72;
-            font-weight: bold;
+            font-size: 1.8em;
         }
 
         h2 {
@@ -147,7 +147,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <div class="container">
 
-    <h1>AGT - Barber</h1>
+    <h1>💈Meus Agendamento💈</h1>
     <h2>Agende Seu Horário</h2>
 
     <form method="POST">

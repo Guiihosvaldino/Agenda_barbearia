@@ -47,6 +47,7 @@ $servicos = listarServicos();
     <a href="financeiro.php">💰 Financeiro</a>
     <a href="admin_agendar.php">➕ Novo Agendamento</a>
     <a href="admin_profissionais.php">👤 Profissionais</a>
+    <a href="admin_servicos.php">💈 Serviços</a>
 </div>
 
 <div class="container">
@@ -120,17 +121,26 @@ body {
 
 .menu {
     background: #0d2a52;
-    padding: 12px 20px;
+    padding: 14px 25px;
     display: flex;
-    gap: 20px;
+    gap: 25px;
+    font-size: 1.1em;
+    position: sticky;
+    top: 0;
+    z-index: 50;
 }
 
 .menu a {
     color: #fff;
     text-decoration: none;
+    padding: 6px 12px;
     font-weight: bold;
+    border-radius: 6px;
 }
 
+.menu a:hover {
+    background: #1e3c72;
+}
 .container {
     background: #fff;
     color: #000;

@@ -179,7 +179,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <button type="submit">Agendar</button>
     </form>
 
-    <a href="agendamento.php" class="voltar">⬅ Voltar</a>
+    <a href="index.php" class="voltar">⬅ Voltar</a>
 
 </div>
 

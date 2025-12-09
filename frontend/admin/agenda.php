@@ -158,6 +158,7 @@ if ($data) {
     <a href="financeiro.php">💰 Financeiro</a>
     <a href="admin_agendar.php">➕ Novo Agendamento</a>
     <a href="admin_profissionais.php">👤 Profissionais</a>
+    <a href="admin_servicos.php">💈 Serviços</a>
 </div>
 
 <style>
