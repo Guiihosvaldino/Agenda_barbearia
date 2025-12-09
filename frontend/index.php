@@ -1,8 +1,23 @@
 <?php
+require_once("../backend/cliente.php");
+session_start();
+
+$erro = $_GET['erro'] ?? null;
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $celular = $_POST['celular'];
-    header("Location: cadastro.php?celular=" . urlencode($celular));
-    exit;
+    $senha   = $_POST['senha'];
+
+    $cliente = buscarClientePorCelular($celular);
+
+    if ($cliente && password_verify($senha, $cliente['senha'])) {
+        $_SESSION['cliente_id'] = $cliente['id_cliente'];
+        header("Location: agendamento.php");
+        exit;
+    } else {
+        header("Location: index.php?erro=1");
+        exit;
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -10,86 +25,151 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Login - Barbearia</title>
-    <link rel="stylesheet" href="assets/style.css">
-</head>
-<body>
-    <h2>Agende Seu Horario </h2>
-    <form method="POST">
-        <label>Digite seu celular:</label><br>
-        <input type="text" name="celular" required><br><br>
-        <button type="submit">Entrar</button>
-    </form>
+
     <style>
-    body {
-        background: linear-gradient(135deg, #1e3c72 0%, #fff 100%);
-        font-family: 'Segoe UI', Arial, sans-serif;
-        color: #ffffff;
-        margin: 0;
-        padding: 0;
-        min-height: 100vh;
-    }
+        body {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: #fff;
+        }
 
-    h2 {
-        text-align: center;
-        margin-top: 40px;
-        font-size: 2.2em;
-        letter-spacing: 1px;
-        font-weight: 600;
-        color: #000000;
-    }
+        .container {
+            background: #ffffff;
+            width: 360px;
+            padding: 30px 26px;
+            border-radius: 14px;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+            color: #333;
+        }
 
-    form {
-        background: #ffffff;
-        max-width: 350px;
-        margin: 40px auto;
-        padding: 32px 28px 24px 28px;
-        border-radius: 16px;
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.18);
-        display: flex;
-        flex-direction: column;
-        gap: 18px;
-    }
+        h1 {
+            text-align: center;
+            margin-bottom: 5px;
+            font-size: 2em;
+            color: #1e3c72;
+            font-weight: bold;
+        }
 
-    label {
-        font-size: 1.1em;
-        margin-bottom: 8px;
-        color: #000000;
-    }
+        h2 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 25px;
+            color: #2a5298;
+            font-size: 1.3em;
+        }
 
-    /* Alteração para o campo de celular */
-    input[type="text"] {
-        padding: 10px 12px;
-        border-radius: 8px;
-        border: 1px solid #000000; /* Borda preta adicionada */
-        outline: none;
-        font-size: 1em;
-        background: #ffffff; /* Fundo branco */
-        color: #222; /* Cor do texto escura para contraste */
-        transition: background 0.2s;
-    }
+        .erro {
+            background: #ffdddd;
+            color: #c20000;
+            border-left: 4px solid #c20000;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+        }
 
-    /* Efeito de foco para quando o usuário clicar no campo */
-    input[type="text"]:focus {
-        background: #f0f0f0; /* Fundo branco levemente acinzentado */
-    }
+        label {
+            font-size: 1em;
+            margin-bottom: 5px;
+            display: block;
+            font-weight: bold;
+            color: #222;
+        }
 
-    button[type="submit"] {
-        background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
-        color: #fff;
-        border: none;
-        border-radius: 8px;
-        padding: 12px 0;
-        font-size: 1.1em;
-        font-weight: 600;
-        cursor: pointer;
-        box-shadow: 0 2px 8px rgba(30,60,114,0.12);
-        transition: background 0.2s, transform 0.2s;
-    }
+        input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-bottom: 18px;
+            font-size: 1em;
+        }
 
-    button[type="submit"]:hover {
-        background: linear-gradient(90deg, #2a5298 0%, #1e3c72 100%);
-        transform: translateY(-2px) scale(1.03);
-    }
+        button {
+            width: 100%;
+            padding: 12px 0;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-bottom: 12px;
+        }
+
+        button:hover {
+            transform: scale(1.03);
+            background: linear-gradient(135deg, #2a5298, #1e3c72);
+        }
+
+        .novo-btn {
+            display: block;
+            text-align: center;
+            background: #1e3c72;
+            padding: 10px;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .novo-btn:hover {
+            background: #16315c;
+            transform: scale(1.02);
+        }
+        .link-recuperar {
+            margin-top: -10px;
+            text-align: right;
+            font-size: 0.9em;
+            color: #1e3c72;
+            text-decoration: none;
+        }
+
+        .link-recuperar:hover {
+            text-decoration: underline;
+        }
+
+
     </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>AGT - Barber</h1>
+    <h2>Agende Seu Horário</h2>
+
+    <form method="POST">
+
+        <?php if ($erro): ?>
+            <p class="erro">❌ Celular ou senha incorretos!</p>
+        <?php endif; ?>
+
+        <label>Celular:</label>
+        <input type="text" name="celular" placeholder="Digite seu celular" required>
+
+        <label>Senha:</label>
+        <input type="password" name="senha" placeholder="Digite sua senha" required>
+
+        <button type="submit">Entrar</button>
+
+        <a href="novo_cliente.php" class="novo-btn">Sou novo cliente</a>
+        <a href="recuperar_senha.php" class="link-recuperar">esqueci minha senha</a>
+
+    </form>
+
+</div>
+
 </body>
 </html>

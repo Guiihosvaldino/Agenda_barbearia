@@ -1,5 +1,6 @@
 <?php
 require_once("../backend/cliente.php");
+session_start();
 
 $celular = $_GET['celular'] ?? null;
 if (!$celular) {
@@ -7,88 +8,76 @@ if (!$celular) {
     exit;
 }
 
-// Verifica se já existe cliente
 $cliente = buscarClientePorCelular($celular);
 if ($cliente) {
-    header("Location: agendamento.php?id=" . $cliente['id_cliente']);
+    $_SESSION['cliente_id'] = $cliente['id_cliente'];
+    header("Location: agendamento.php");
     exit;
 }
 
-// Se o form foi enviado
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
     $nome = $_POST['nome'];
     $data = $_POST['data_nascimento'];
+    $senha = $_POST['senha'];
 
-    $id = cadastrarCliente($nome, $celular, $data);
-    header("Location: agendamento.php?id=" . $id);
+    $id = cadastrarCliente($nome, $celular, $senha, $data);
+
+    $_SESSION['cliente_id'] = $id;
+    header("Location: agendamento.php");
     exit;
 }
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <title>Cadastro - Barbearia</title>
+<meta charset="UTF-8">
+<title>Cadastro - Barbearia</title>
 </head>
 <body>
-    <h2>Cadastro de Cliente</h2>
-    <form method="POST">
-        <label>Nome:</label><br>
-        <input type="text" name="nome" required><br><br>
-        <label>Data de Nascimento:</label><br>
-        <input type="date" name="data_nascimento" required><br><br>
-        <button type="submit">Cadastrar</button>
-    </form>
-    <style>
-        body {
-            background: linear-gradient(135deg, #1e3c72 0%, #fff 100%);
-        font-family: 'Segoe UI', Arial, sans-serif;
+
+<h2>Cadastro de Cliente</h2>
+
+<form method="POST">
+    <label>Nome:</label>
+    <input type="text" name="nome" required>
+
+    <label>Data de Nascimento:</label>
+    <input type="date" name="data_nascimento" required>
+
+    <label>Senha:</label>
+    <input type="password" name="senha" required>
+
+    <button type="submit">Cadastrar</button>
+</form>
+
+<style>
+    body {
+        background: linear-gradient(135deg, #1e3c72, #fff);
+        font-family: Arial;
+    }
+    form {
+        background: #fff;
+        max-width: 350px;
+        margin: 40px auto;
+        padding: 28px;
+        border-radius: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    input, button {
+        padding: 10px;
+        border-radius: 6px;
+        border: 1px solid #222;
+        font-size: 1em;
+    }
+    button {
+        background: #2d89ef;
         color: #fff;
-        margin: 0;
-        padding: 0;
-        min-height: 100vh;
-        }
-        h2 {
-            color: #333;
-            text-align: center;
-            margin-top: 40px;
-        }
-        form {
-            background: #fff;
-            max-width: 400px;
-            margin: 40px auto;
-            padding: 30px 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-        label {
-            font-weight: bold;
-            color: #555;
-        }
-        input[type="text"], input[type="date"] {
-            width: 100%;
-            padding: 8px 10px;
-            margin-top: 5px;
-            margin-bottom: 18px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-        button[type="submit"] {
-            background: #2d89ef;
-            color: #fff;
-            border: none;
-            padding: 10px 0;
-            width: 100%;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        button[type="submit"]:hover {
-            background: #1b5fa7;
-        }
-    </style>
+        font-weight: bold;
+    }
+</style>
+
 </body>
 </html>
