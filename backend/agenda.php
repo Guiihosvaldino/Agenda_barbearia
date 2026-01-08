@@ -20,4 +20,54 @@ function salvarAgendamento($idCliente, $idProfissional, $idServico, $data, $hora
     $stmt->execute([$idCliente, $idProfissional, $idServico, $data, $hora]);
     return true;
 }
+function listarFuncionamento() {
+    global $pdo;
+    return $pdo->query("SELECT * FROM funcionamento")->fetchAll(PDO::FETCH_ASSOC);
+}
+function salvarFuncionamento($dia, $abre, $fecha, $ativo) {
+    global $pdo;
+    $stmt = $pdo->prepare("
+        UPDATE funcionamento 
+        SET abre=?, fecha=?, ativo=? 
+        WHERE dia_semana=?
+    ");
+    return $stmt->execute([$abre, $fecha, $ativo, $dia]);
+}
+function funcionamentoDoDia($data) {
+    global $pdo;
+
+    $diaSemana = strtoupper(strftime('%A', strtotime($data)));
+
+    $map = [
+        'MONDAY'=>'SEGUNDA',
+        'TUESDAY'=>'TERCA',
+        'WEDNESDAY'=>'QUARTA',
+        'THURSDAY'=>'QUINTA',
+        'FRIDAY'=>'SEXTA',
+        'SATURDAY'=>'SABADO',
+        'SUNDAY'=>'DOMINGO'
+    ];
+
+    $diaSemana = $map[$diaSemana];
+
+    $stmt = $pdo->prepare("SELECT * FROM funcionamento WHERE dia_semana=?");
+    $stmt->execute([$diaSemana]);
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+function barbeariaEstaAberta($data) {
+    global $pdo;
+
+    $diaSemana = date('N', strtotime($data)); // 1=Segunda ... 7=Domingo
+
+    $stmt = $pdo->prepare("
+        SELECT * FROM funcionamento 
+        WHERE dia_semana = ? AND ativo = 1
+        LIMIT 1
+    ");
+    $stmt->execute([$diaSemana]);
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
 ?>

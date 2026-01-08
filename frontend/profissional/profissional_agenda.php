@@ -93,8 +93,11 @@ tr:nth-child(even) {
     <a href="profissional_agenda.php">📅 Minha Agenda</a>
     <a href="profissional_perfil.php">👤 Meu Perfil</a>
     <a href="profissional_estatistica.php">📊 Estatísticas</a>
+    <a href="profissional_agendar.php">➕ Novo Agendamento</a>
     <a href="profissional_login.php">🚪 Sair</a>
+    
 </div>
+
 
 <div class="container">
     <h1>📅 Minha Agenda</h1>

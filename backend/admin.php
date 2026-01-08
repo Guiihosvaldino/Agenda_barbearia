@@ -42,4 +42,23 @@ function calcularFinanceiroTotal($ano, $mes) {
     $stmt->execute([$ano, $mes]);
     return $stmt->fetch(PDO::FETCH_ASSOC)['total_geral'] ?? 0;
 }
+
+
+require_once("conexao.php");
+
+function buscarAdminPorEmail($email) {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT * FROM admin WHERE email = ?");
+    $stmt->execute([$email]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+function criarAdmin($nome, $email, $senha) {
+    global $pdo;
+    $hash = password_hash($senha, PASSWORD_DEFAULT);
+    $stmt = $pdo->prepare("INSERT INTO admin (nome, email, senha) VALUES (?, ?, ?)");
+    return $stmt->execute([$nome, $email, $hash]);
+}
+
+
 ?>

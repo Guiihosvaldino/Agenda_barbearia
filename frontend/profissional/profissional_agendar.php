@@ -43,12 +43,12 @@ $servicos = listarServicos();
 
 <!-- MENU SUPERIOR -->
 <div class="menu">
-    <a href="agenda.php">📅 Agenda</a>
-    <a href="financeiro.php">💰 Financeiro</a>
-    <a href="admin_agendar.php">➕ Novo Agendamento</a>
-    <a href="admin_profissionais.php">👤 Profissionais</a>
-    <a href="admin_servicos.php">💈 Serviços</a>
-    <a href="login_admin.php">🚪 Sair</a>
+    <a href="profissional_home.php">🏠 Home</a>
+    <a href="profissional_agenda.php">📅 Minha Agenda</a>
+    <a href="profissional_perfil.php">👤 Meu Perfil</a>
+    <a href="profissional_estatistica.php">📊 Estatísticas</a>
+    <a href="profissional_agendar.php">➕ Novo Agendamento</a>
+    <a href="profissional_login.php">🚪 Sair</a>
 </div>
 
 <div class="container">
@@ -96,8 +96,8 @@ $servicos = listarServicos();
         </select>
 
         <label>Data:</label>
-        <input type="date" name="data" required>
-
+        <input type="date" name="data" id="data" required>
+        
         <label>Hora:</label>
         <input type="time" name="hora" required>
 
@@ -120,67 +120,152 @@ body {
     color: #fff;
 }
 
+<style>
+body {
+    margin: 0;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    font-family: 'Segoe UI', Arial;
+    color: white;
+}
+
+/* MENU */
 .menu {
     background: #0d2a52;
     padding: 14px 25px;
     display: flex;
     gap: 25px;
-    font-size: 1.1em;
     position: sticky;
     top: 0;
     z-index: 50;
 }
-
 .menu a {
     color: #fff;
-    text-decoration: none;
-    padding: 6px 12px;
     font-weight: bold;
+    text-decoration: none;
+    padding: 6px 10px;
     border-radius: 6px;
 }
-
 .menu a:hover {
     background: #1e3c72;
 }
+
+/* CONTAINER */
 .container {
-    background: #fff;
-    color: #000;
+    background: white;
     max-width: 600px;
-    margin: 30px auto;
-    padding: 25px;
+    margin: 40px auto;
+    padding: 30px;
+    color: #222;
     border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
 
-.form-busca input {
-    padding: 8px;
-    width: 70%;
+h2 {
+    text-align: center;
+    color: #1e3c72;
+    margin-bottom: 25px;
 }
 
-.form-busca button {
-    padding: 8px;
-    background: #1e3c72;
-    color: #fff;
-}
-
-.form-agendar select,
-.form-agendar input {
-    width: 100%;
-    padding: 10px;
+/* MENSAGENS */
+.msg {
+    background: #d4edda;
+    color: #155724;
+    padding: 12px;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: bold;
     margin-bottom: 15px;
 }
 
-button {
-    width: 100%;
-    background: #2d7a2d;
-    color: #fff;
-    padding: 10px;
+.alert {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 12px;
     border-radius: 6px;
+    text-align: center;
+    font-weight: bold;
 }
 
-.alert { color: red; font-weight: bold; }
-.msg { color: green; font-weight: bold; text-align:center; }
+/* FORM BUSCA */
+.form-busca {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+.form-busca input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+.form-busca button {
+    padding: 10px 16px;
+    background: #1e3c72;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.form-busca button:hover {
+    background: #2a5298;
+}
+
+/* FORM AGENDAR */
+.form-agendar label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.form-agendar input,
+.form-agendar select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+}
+
+/* BOTÃO PRINCIPAL */
+.form-agendar button {
+    width: 100%;
+    background: #1e3c72;
+    color: white;
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+}
+.form-agendar button:hover {
+    background: #2a5298;
+}
+</style>
+
 
 </style>
+
+<script>
+document.getElementById("data").addEventListener("change", function() {
+
+    fetch("verificar_funcionamento.php?data=" + this.value)
+        .then(response => response.json())
+        .then(dados => {
+
+            if (!dados.ativo) {
+                alert("❌ Barbearia fechada nesse dia!");
+                this.value = "";
+            }
+
+        });
+
+});
+</script>
+
+</body>
+</html>
 
 </body>
 </html>

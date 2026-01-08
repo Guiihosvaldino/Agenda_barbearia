@@ -227,6 +227,7 @@ tr:nth-child(odd) { background: #ffffff; }
     <a href="admin_agendar.php">➕ Novo Agendamento</a>
     <a href="admin_profissionais.php">👤 Profissionais</a>
     <a href="admin_servicos.php">💈 Serviços</a>
+    <a href="login_admin.php">🚪 Sair</a>
 </div>
 
 <div class="container">

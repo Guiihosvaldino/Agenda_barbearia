@@ -26,5 +26,27 @@ function buscarClientePorNome($nome) {
     $stmt->execute([$nome]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+function salvarTokenCliente($idCliente, $token, $expira) {
+    global $pdo;
+    $stmt = $pdo->prepare("
+        UPDATE cliente 
+        SET token_recuperacao = ?, token_expira = ?
+        WHERE id_cliente = ?
+    ");
+    return $stmt->execute([$token, $expira, $idCliente]);
+}
+
+function validarTokenCliente($idCliente, $token) {
+    global $pdo;
+    $stmt = $pdo->prepare("
+        SELECT * FROM cliente
+        WHERE id_cliente = ?
+        AND token_recuperacao = ?
+        AND token_expira >= NOW()
+    ");
+    $stmt->execute([$idCliente, $token]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
 
 ?>

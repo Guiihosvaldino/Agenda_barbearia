@@ -55,12 +55,18 @@ body {
     padding: 14px 25px;
     display: flex;
     gap: 25px;
+    position: sticky;
+    top: 0;
 }
-
 .menu a {
-    color: white;
-    text-decoration: none;
+    color: #fff;
     font-weight: bold;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+}
+.menu a:hover {
+    background: #1e3c72;
 }
 
 .container {
@@ -95,9 +101,10 @@ canvas {
 <div class="menu">
     <a href="profissional_home.php">🏠 Home</a>
     <a href="profissional_agenda.php">📅 Minha Agenda</a>
-    <a href="profissional_estatistica.php">📊 Estatísticas</a>
     <a href="profissional_perfil.php">👤 Meu Perfil</a>
-    <a href="profissional_login.php">🚪 Sair</a>
+    <a href="profissional_estatistica.php">📊 Estatísticas</a>
+    <a href="profissional_agendar.php">➕ Novo Agendamento</a>
+    <a href="profissional_login.php">🚪 Sair</a>/a>
 </div>
 
 <div class="container">

@@ -153,8 +153,9 @@ button:hover {
 <div class="menu">
     <a href="profissional_home.php">🏠 Home</a>
     <a href="profissional_agenda.php">📅 Minha Agenda</a>
-    <a href="profissional_estatistica.php">📊 Estatísticas</a>
     <a href="profissional_perfil.php">👤 Meu Perfil</a>
+    <a href="profissional_estatistica.php">📊 Estatísticas</a>
+    <a href="profissional_agendar.php">➕ Novo Agendamento</a>
     <a href="profissional_login.php">🚪 Sair</a>
 </div>
 

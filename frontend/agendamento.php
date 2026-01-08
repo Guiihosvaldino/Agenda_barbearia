@@ -2,6 +2,7 @@
 require_once("../backend/profissional.php");
 require_once("../backend/agenda.php");
 
+
 // Verifica se cliente está logado
 session_start();
 
@@ -22,12 +23,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $data = $_POST['data'];
     $hora = $_POST['hora'];
 
+    $funcionamento = barbeariaEstaAberta($data);
+
+if (!$funcionamento) {
+    $msg = "❌ A barbearia não funciona neste dia.";
+} else {
+
     if (salvarAgendamento($idCliente, $idProfissional, $idServico, $data, $hora)) {
         header("Location: confirmacao.php");
         exit;
     } else {
         $msg = "⚠️ Este horário já está ocupado. Escolha outro.";
     }
+
+}
+
 }
 ?>
 <!DOCTYPE html>
@@ -171,7 +181,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </select>
 
         <label>Data:</label>
-        <input type="date" name="data" required>
+        <input type="date" name="data" id="data" required>
+
 
         <label>Hora:</label>
         <input type="time" name="hora" required>

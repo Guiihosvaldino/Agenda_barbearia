@@ -9,13 +9,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $cliente = buscarClientePorCelular($celular);
 
     if ($cliente) {
+
+        $token = rand(100000, 999999);
+        $expira = date("Y-m-d H:i:s", strtotime("+10 minutes"));
+
+        salvarTokenCliente($cliente['id_cliente'], $token, $expira);
+
+        // ⚠️ TESTE ACADÊMICO
+        // echo "Token: $token";
+
         header("Location: redefinir_senha.php?id=" . $cliente['id_cliente']);
         exit;
+
     } else {
         $msg = "❌ Celular não encontrado!";
     }
 }
 ?>
+
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -116,7 +128,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
 
 <div class="menu">
-    <a href="../index.php">⟵ Voltar</a>
+    <a href="index.php">⟵ Voltar</a>
 </div>
 
 <div class="container">
