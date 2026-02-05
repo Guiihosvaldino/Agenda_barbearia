@@ -223,5 +223,17 @@ function atualizarSenhaProfissional($id, $senha) {
     return $stmt->execute([$hash, $id]);
 }
 
+function atualizarPerfilProfissional($id, $nome, $especialidade, $email) {
+    global $pdo;
+
+    $stmt = $pdo->prepare("
+        UPDATE profissional
+        SET nome = ?, especialidade = ?, email = ?
+        WHERE id_profissional = ?
+    ");
+
+    return $stmt->execute([$nome, $especialidade, $email, $id]);
+}
+
 
 ?>

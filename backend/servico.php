@@ -46,3 +46,4 @@ function excluirServico($id) {
     $stmt = $pdo->prepare("DELETE FROM servico WHERE id_servico = ?");
     return $stmt->execute([$id]);
 }
+

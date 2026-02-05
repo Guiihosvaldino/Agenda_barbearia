@@ -86,12 +86,11 @@ h1 {
 
 <div class="container">
     <h1>Bem-vindo, <?= $nome ?> 👋</h1>
-
+    <a class="option-btn" href="profissional_agendar.php">➕ Novo Agendamento</a>
     <a class="option-btn" href="profissional_agenda.php">📅 Ver minha agenda</a>
     <a class="option-btn" href="profissional_perfil.php">👤 Editar meu perfil</a>
     <a class="option-btn"href="profissional_estatistica.php">📊 Estatísticas</a>
     <a class="option-btn" href="profissional_login.php">🚪 Sair</a>
-        <a href="profissional_agendar.php">➕ Novo Agendamento</a>
 </div>
 
 </body>

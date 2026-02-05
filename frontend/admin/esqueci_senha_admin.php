@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $admin = $stmt->fetch();
 
     if ($admin) {
-        // Aqui você poderia gerar token e enviar por email
+        // Aqui aqui eu posso cria um token e enviar o email de recuperação
         $msg = "✅ Um link de redefinição de senha foi enviado para o email cadastrado!";
     } else {
         $msg = "❌ Email não encontrado!";

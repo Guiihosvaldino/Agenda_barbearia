@@ -2,7 +2,6 @@
 require_once("../backend/profissional.php");
 require_once("../backend/agenda.php");
 
-
 // Verifica se cliente está logado
 session_start();
 
@@ -17,29 +16,42 @@ $profissionais = listarProfissionais();
 $servicos = listarServicos();
 
 $msg = "";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
     $idProfissional = $_POST['profissional'];
-    $idServico = $_POST['servico'];
-    $data = $_POST['data'];
-    $hora = $_POST['hora'];
+    $idServico      = $_POST['servico'];
+    $data            = $_POST['data'];
+    $hora            = $_POST['hora'];
 
-    $funcionamento = barbeariaEstaAberta($data);
+    // 🔒 TENTA SALVAR O AGENDAMENTO (COM TODAS AS VALIDAÇÕES)
+    $resultado = salvarAgendamento(
+        $idCliente,
+        $idProfissional,
+        $idServico,
+        $data,
+        $hora
+    );
 
-if (!$funcionamento) {
-    $msg = "❌ A barbearia não funciona neste dia.";
-} else {
-
-    if (salvarAgendamento($idCliente, $idProfissional, $idServico, $data, $hora)) {
+    if ($resultado === true) {
         header("Location: confirmacao.php");
         exit;
-    } else {
+    }
+    elseif ($resultado === "FECHADO") {
+        $msg = "❌ A barbearia não funciona neste dia.";
+    }
+    elseif ($resultado === "FORA_HORARIO") {
+        $msg = "❌ Horário fora do expediente da barbearia.";
+    }
+    elseif ($resultado === "OCUPADO") {
         $msg = "⚠️ Este horário já está ocupado. Escolha outro.";
     }
-
-}
-
+    else {
+        $msg = "❌ Erro inesperado ao realizar o agendamento.";
+    }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -145,14 +157,88 @@ if (!$funcionamento) {
             background: #16315c;
             transform: scale(1.02);
         }
+        .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.calendar-header button {
+    background: #1e3c72;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.calendar-week, #calendario {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+}
+
+.calendar-week div {
+    text-align: center;
+    font-weight: bold;
+}
+
+.dia {
+    padding: 10px;
+    text-align: center;
+    border-radius: 8px;
+    background: #eee;
+    cursor: pointer;
+}
+
+.dia.passado {
+    background: #ddd;
+    color: #999;
+}
+
+.dia.fechado {
+    background: #ccc;
+    text-decoration: line-through;
+    cursor: not-allowed;
+}
+
+.dia.selecionado {
+    background: #2a5298;
+    color: white;
+}
+.meus-horarios {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    background: #28a745;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 8px;
+    margin-bottom: 18px;
+    transition: 0.2s;
+}
+
+.meus-horarios:hover {
+    background: #1f7a34;
+    transform: scale(1.02);
+}
+
     </style>
 
 </head>
 <body>
+    
 
 <div class="container">
 
     <h2>Agendar Horário</h2>
+    <a href="cliente_agendamentos.php" class="meus-horarios">
+    📅 Meus Agendamentos
+</a>
+
 
     <?php if ($msg): ?>
         <div class="erro"><?= $msg ?></div>
@@ -160,8 +246,10 @@ if (!$funcionamento) {
 
     <form method="POST">
 
+        
         <label>Profissional:</label>
-        <select name="profissional" required>
+<select name="profissional" id="profissional" onchange="carregarHorarios()">
+
             <option value="">Selecione</option>
             <?php foreach ($profissionais as $p): ?>
                 <option value="<?= $p['id_profissional'] ?>">
@@ -171,7 +259,7 @@ if (!$funcionamento) {
         </select>
 
         <label>Serviço:</label>
-        <select name="servico" required>
+        <select name="servico" id="servico" onchange="carregarHorarios()">
             <option value="">Selecione</option>
             <?php foreach ($servicos as $s): ?>
                 <option value="<?= $s['id_servico'] ?>">
@@ -180,19 +268,142 @@ if (!$funcionamento) {
             <?php endforeach; ?>
         </select>
 
-        <label>Data:</label>
-        <input type="date" name="data" id="data" required>
+       <label>Escolha a Data:</label>
+<span id="mesAno"></span>
+
+<div class="calendar-header">
+    <button type="button" onclick="mesAnterior()">‹</button>
+    <button type="button" onclick="mesProximo()">›</button>
+</div>
+
+<div class="calendar-week">
+    <div>Dom</div><div>Seg</div><div>Ter</div>
+    <div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
+</div>
+
+<div id="calendario"></div>
+
+<input type="hidden" name="data" id="dataSelecionada">
 
 
-        <label>Hora:</label>
-        <input type="time" name="hora" required>
+    
+
+     <select name="hora" id="horarios" required>
+    <option value="">Selecione profissional, serviço e data</option>
+</select>
+
+
 
         <button type="submit">Agendar</button>
+
+
     </form>
 
     <a href="index.php" class="voltar">⬅ Voltar</a>
 
 </div>
+
+
+<script>
+let dataAtual = new Date();
+let mes = dataAtual.getMonth();
+let ano = dataAtual.getFullYear();
+
+function gerarCalendario() {
+    const calendario = document.getElementById("calendario");
+    calendario.innerHTML = "";
+
+    const mesAno = document.getElementById("mesAno");
+    const meses = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho",
+                   "Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+
+    mesAno.innerText = meses[mes] + " " + ano;
+
+    let primeiroDia = new Date(ano, mes, 1).getDay();
+    let ultimoDia = new Date(ano, mes + 1, 0).getDate();
+
+    // espaços vazios antes do dia 1
+    for (let i = 0; i < primeiroDia; i++) {
+        calendario.innerHTML += "<div></div>";
+    }
+
+    for (let dia = 1; dia <= ultimoDia; dia++) {
+        let btn = document.createElement("div");
+        btn.className = "dia";
+        btn.innerText = dia;
+
+        let data = new Date(ano, mes, dia);
+        let hoje = new Date();
+        hoje.setHours(0,0,0,0);
+
+        if (data < hoje) {
+            btn.classList.add("passado");
+        }
+
+        btn.onclick = () => selecionarDia(btn, data);
+        calendario.appendChild(btn);
+    }
+}
+
+function selecionarDia(btn, data) {
+    document.querySelectorAll(".dia").forEach(d => d.classList.remove("selecionado"));
+    btn.classList.add("selecionado");
+
+    document.getElementById("dataSelecionada").value =
+        data.toISOString().split('T')[0];
+
+
+    carregarHorarios();
+}
+
+
+function mesAnterior() {
+    mes--;
+    if (mes < 0) { mes = 11; ano--; }
+    gerarCalendario();
+}
+
+function mesProximo() {
+    mes++;
+    if (mes > 11) { mes = 0; ano++; }
+    gerarCalendario();
+}
+
+gerarCalendario();
+
+
+function carregarHorarios() {
+    const data = document.getElementById("dataSelecionada").value;
+    const servico = document.getElementById("servico").value;
+    const profissional = document.getElementById("profissional").value;
+    
+    console.log(data, servico, profissional);
+
+    if (!data || !servico || !profissional) return;
+
+    fetch(`../backend/buscar_horarios.php?data=${data}&servico=${servico}&profissional=${profissional}`)
+
+    .then(r => r.json())
+    .then(lista => {
+        const select = document.getElementById("horarios");
+        select.innerHTML = "";
+
+        if (lista.length === 0) {
+            select.innerHTML = "<option>Sem horários disponíveis</option>";
+            return;
+        }
+
+        lista.forEach(h => {
+            select.innerHTML += `<option value="${h}">${h}</option>`;
+        });
+    });
+}
+ 
+
+
+
+</script>
+
 
 </body>
 </html>

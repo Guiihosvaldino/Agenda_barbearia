@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Recuperar Senha 💈</title>
 
     <style>
-        /* ——— IDENTIDADE VISUAL UNIFICADA ——— */
+
         body {
             margin: 0;
             background: linear-gradient(135deg, #1e3c72, #2a5298);

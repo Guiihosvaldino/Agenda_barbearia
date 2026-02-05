@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Gerar token único para redefinir senha
         $token = bin2hex(random_bytes(20));
 
-        // Salvar token no banco (você precisa criar campo `reset_token` na tabela `profissional`)
+        // Salvar token no banco 
         salvarTokenResetSenha($prof['id_profissional'], $token);
 
         // Link para redefinir senha
