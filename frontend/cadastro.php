@@ -68,7 +68,7 @@ body {
 
 .container {
     background: #ffffff;
-    max-width: 450px;
+    max-width: 550px;
     margin: 60px auto;
     padding: 30px 35px;
     border-radius: 16px;
@@ -122,6 +122,13 @@ button:hover {
     font-weight: bold;
     margin-bottom: 10px;
 }
+            .logo {
+        width: 350px;  
+        margin-bottom: -50px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        }
 </style>
 </head>
 <body>
@@ -131,7 +138,8 @@ button:hover {
 </div>
 
 <div class="container">
-    <h2>💈 Cadastro de Cliente</h2>
+        <img src="../frontend/imagem/logo1.png" class="logo">
+    <h2>💈 Cadastro de Cliente 💈</h2>
 
     <form method="POST">
         <input type="text" name="nome" placeholder="Nome" required>

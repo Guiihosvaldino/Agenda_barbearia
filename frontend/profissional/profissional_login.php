@@ -48,24 +48,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .card {
             background: #fff;
             color: #333;
-            width: 360px;
+            width: 550px;
             padding: 35px 30px;
             border-radius: 14px;
             box-shadow: 0 6px 18px rgba(0,0,0,0.25);
             text-align: center;
+            
         }
 
-        h1 {
-            margin: 0 0 10px;
-            color: #1e3c72;
-            font-size: 1.8em;
-        }
 
-        h2 {
-            margin: 0 0 20px;
-            color: #2a5298;
-            font-weight: normal;
+        h2 { 
+            text-align: center; 
+            color: #1e3c72; 
         }
+        
 
         form {
             display: flex;
@@ -83,8 +79,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         input {
             padding: 12px;
             border-radius: 8px;
-            border: 1px solid #aaa;
-            font-size: 1em;
+            border: 2px solid #aaa;
+            font-size: 1.3em;
         }
 
         input:focus {
@@ -104,7 +100,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             font-weight: bold;
             transition: 0.2s;
         }
-
+        .logo {
+    width: 350px; 
+    margin-bottom: -70px;
+        }
         button:hover {
             background: #16315c;
         }
@@ -137,9 +136,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
 
 <div class="card">
-    <h1>💈 Meus Agendamento 💈</h1>
-    <h2>Área do Profissional</h2>
-    <h2>Login</h2>
+    <img src="../../frontend/imagem/logo1.png" class="logo">
+
+    <h2> 💈 Área do Profissional 💈</h2>
+
 
     <?php if ($erro): ?>
         <div class="erro">❌ E-mail ou senha incorretos!</div>

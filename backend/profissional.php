@@ -86,12 +86,15 @@ function excluirProfissional($id) {
 }
 
 
-/* ============================================================
-   AGENDA DO PROFISSIONAL
-   ============================================================ */
 
-function listarAgendaProfissional($idProfissional) {
+
+function listarAgendaProfissional($idProfissional, $data = null) { 
     global $pdo;
+
+    // Se ninguém passar a data, ele assume a data de hoje
+    if (!$data) {
+        $data = date('Y-m-d');
+    }
 
     $stmt = $pdo->prepare("
         SELECT 
@@ -106,18 +109,29 @@ function listarAgendaProfissional($idProfissional) {
         FROM agenda a
         INNER JOIN cliente c ON c.id_cliente = a.id_cliente
         INNER JOIN servico s ON s.id_servico = a.id_servico
-        WHERE a.id_profissional = ?
-        ORDER BY a.data ASC, a.hora ASC
+        WHERE a.id_profissional = ? AND a.data = ?
+        ORDER BY a.hora ASC
     ");
 
-    $stmt->execute([$idProfissional]);
-
+    $stmt->execute([$idProfissional, $data]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-/* ============================================================
-   ESTATÍSTICAS DO PROFISSIONAL
-   ============================================================ */
+
+function buscarAgendamentoPorId($idAgenda) {
+    global $pdo;
+    $stmt = $pdo->prepare("
+        SELECT a.*, c.nome as cliente, s.nome as servico 
+        FROM agenda a
+        INNER JOIN cliente c ON c.id_cliente = a.id_cliente
+        INNER JOIN servico s ON s.id_servico = a.id_servico
+        WHERE a.id_agenda = ?
+    ");
+    $stmt->execute([$idAgenda]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+
 
 function totalAtendimentosMes($idProf, $ano, $mes) {
     global $pdo;

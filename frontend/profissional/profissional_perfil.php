@@ -60,27 +60,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $_POST['acao'] == "senha") {
     <title>Meu Perfil</title>
 
 <style>
-body {
-    margin: 0;
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
-    font-family: 'Segoe UI', Arial;
-    color: white;
-}
-.menu {
+    body {
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0;
+        padding: 0;
+        color: #fff;
+        }
+
+     .menu {
     background: #0d2a52;
     padding: 14px 25px;
     display: flex;
     gap: 25px;
+    font-size: 1.1em;
     position: sticky;
     top: 0;
+    z-index: 50;
 }
+
 .menu a {
     color: #fff;
-    font-weight: bold;
     text-decoration: none;
-    padding: 6px 10px;
+    padding: 6px 12px;
+    font-weight: bold;
     border-radius: 6px;
 }
+
 .menu a:hover {
     background: #1e3c72;
 }
@@ -145,6 +151,13 @@ button:hover {
     border-bottom: 2px solid #1e3c72;
     padding-bottom: 5px;
 }
+    .logo {
+        width: 350px;   /* quase o tamanho do formulário */
+        margin-bottom: -70px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        }
 </style>
 
 </head>
@@ -161,7 +174,7 @@ button:hover {
 
 
 <div class="container">
-
+        <img src="../../frontend/imagem/logo1.png" class="logo">
     <h1>👤 Meu Perfil</h1>
 
     <?php if ($msgSucesso): ?>
@@ -173,9 +186,6 @@ button:hover {
     <?php endif; ?>
 
 
-    <!-- =======================
-         FORMULÁRIO DE PERFIL
-         ======================= -->
     <h2 class="section-title">📄 Dados Pessoais</h2>
 
     <form method="POST">
@@ -194,9 +204,6 @@ button:hover {
     </form>
 
 
-    <!-- =======================
-         ALTERAÇÃO DE SENHA
-         ======================= -->
     <h2 class="section-title">🔑 Alterar Senha</h2>
 
     <form method="POST">

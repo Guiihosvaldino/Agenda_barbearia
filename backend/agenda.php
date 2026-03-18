@@ -136,5 +136,21 @@ function listarAgendamentosFuturosCliente($idCliente) {
     $stmt->execute([$idCliente]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+function editarAgendamento($id, $data, $hora, $idServico) {
+    global $pdo;
 
+    $stmt = $pdo->prepare("
+        UPDATE agenda 
+        SET data = ?, hora = ?, id_servico = ?
+        WHERE id_agendamento = ?
+    ");
+
+    return $stmt->execute([$data, $hora, $idServico, $id]);
+}
+function excluirAgendamento($id) {
+    global $pdo;
+
+    $stmt = $pdo->prepare("DELETE FROM agenda WHERE id_agendamento = ?");
+    return $stmt->execute([$id]);
+}
 ?>

@@ -215,6 +215,13 @@ tr:nth-child(odd) { background: #ffffff; }
     border-radius: 6px;
     font-weight: bold;
 }
+    .logo {
+        width: 350px;   /* quase o tamanho do formulário */
+        margin-bottom: -100px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        }
 
 </style>
 </head>
@@ -224,7 +231,6 @@ tr:nth-child(odd) { background: #ffffff; }
 <div class="menu">
     <a href="agenda.php">📅 Agenda</a>
     <a href="financeiro.php">💰 Financeiro</a>
-    <a href="admin_agendar.php">➕ Novo Agendamento</a>
     <a href="admin_profissionais.php">👤 Profissionais</a>
     <a href="admin_servicos.php">💈 Serviços</a>
     <a href="admin_funcionamento.php">⏰ Funcionamento</a>
@@ -232,7 +238,7 @@ tr:nth-child(odd) { background: #ffffff; }
 </div>
 
 <div class="container">
-
+    <img src="../../frontend/imagem/logo1.png" class="logo">
     <h2>💈 Cadastro de Serviços</h2>
 
     <?php if ($msgSucesso): ?>

@@ -55,4 +55,5 @@ while ($abre + ($duracao * 60) <= $fecha) {
     $abre += $duracao * 60;
 }
 
+
 echo json_encode($horarios);

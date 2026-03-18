@@ -73,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         .container {
             background: #ffffff;
-            width: 420px;
+            width: 660px;
             padding: 28px 32px;
             border-radius: 16px;
             box-shadow: 0 8px 22px rgba(0,0,0,0.25);
@@ -86,6 +86,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             font-size: 1.8em;
             margin-bottom: 20px;
             font-weight: 700;
+        }
+        span{
+            font-weight: bold;
+            color: #222;
+            margin-bottom: 8px;
+            display: block;
+            font-size: 1.7em;
         }
 
         label {
@@ -170,7 +177,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     color: white;
     border: none;
     border-radius: 6px;
-    padding: 5px 10px;
+    padding: 12px 10px;
     cursor: pointer;
 }
 
@@ -289,7 +296,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
 
      <select name="hora" id="horarios" required>
-    <option value="">Selecione profissional, serviço e data</option>
+    <option value="">Selecione a Hora </option>
 </select>
 
 

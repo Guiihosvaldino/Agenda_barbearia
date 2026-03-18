@@ -18,7 +18,7 @@
 
         .container {
             background: #ffffff;
-            width: 360px;
+            width: 550px;
             padding: 30px 28px;
             border-radius: 16px;
             box-shadow: 0 8px 22px rgba(0,0,0,0.25);
@@ -91,24 +91,43 @@
             background: #16315c;
             transform: scale(1.02);
         }
+            .logo {
+        width: 350px;  
+        margin-bottom: -50px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        }
     </style>
 
 </head>
 <body>
 
 <div class="container">
-
+    <img src="../frontend/imagem/logo1.png" class="logo">
     <h2>Cadastro Inicial</h2>
 
-    <form method="GET" action="cadastro.php">
+    <?php if (isset($_GET['erro']) && $_GET['erro'] === 'existente'): ?>
+        <div style="background-color: #f8d7da; color: #721c24; padding: 15px; border-radius: 8px; border: 1px solid #f5c6cb; margin-bottom: 20px; text-align: center; font-weight: bold;">
+            ⚠️ Este número já está cadastrado!
+        </div>
+    <?php endif; ?>
+
+    <form method="POST" action="../backend/cadastro.php">
         <label>Digite seu celular:</label>
-        <input type="text" name="celular" required>
+        <input 
+            type="tel" 
+            name="celular" 
+            value="<?php echo $_GET['celular'] ?? ''; ?>" 
+            maxlength="11" 
+            placeholder="Ex: 34999999999" 
+            required
+        >
 
         <button type="submit">Continuar</button>
     </form>
 
     <a href="index.php" class="voltar">⬅ Voltar ao Login</a>
-
 </div>
 
 </body>

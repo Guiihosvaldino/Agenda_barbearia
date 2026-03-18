@@ -123,16 +123,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             font-weight: bold;
             margin-bottom: 10px;
         }
+                    .logo {
+        width: 350px;  
+        margin-bottom: -30px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        }
     </style>
 </head>
 <body>
 
 <div class="menu">
+    
     <a href="index.php">⟵ Voltar</a>
 </div>
 
 <div class="container">
-    <h2>💈 Recuperar Senha</h2>
+         <img src="../frontend/imagem/logo1.png" class="logo">
+    <h2>💈 Recuperar Senha 💈</h2>
 
     <form method="POST">
         <?php if ($msg): ?>

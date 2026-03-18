@@ -43,8 +43,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
             background: #fff;
             color: #333;
-            width: 360px;
-            padding: 35px 30px;
+            width: 560px;
+            padding: 35px 20px;
             border-radius: 14px;
             box-shadow: 0 6px 18px rgba(0,0,0,0.25);
             text-align: center;
@@ -76,20 +76,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         label {
-            font-size: 1em;
-            margin-bottom: 5px;
-            display: block;
+            text-align: left;
             font-weight: bold;
-            color: #222;
+            color: #444;
         }
 
         input {
-            width: 100%;
-            padding: 10px;
+            padding: 12px;
             border-radius: 8px;
-            border: 1px solid #333;
-            margin-bottom: 18px;
-            font-size: 1em;
+            border: 2px solid #aaa;
+            font-size: 1.3em;
         }
 
         button {
@@ -138,7 +134,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .link-recuperar:hover {
             text-decoration: underline;
         }
-
+        .logo {
+    width: 340px; 
+    margin-bottom: -70px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        a { 
+        text-decoration: none; 
+        color: #1e3c72; 
+        font-weight: bold; 
+        text-align: center; 
+        display: block;
+        margin-top: 10px; 
+    }
 
     </style>
 </head>
@@ -147,7 +160,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <div class="container">
 
-    <h1>💈Meus Agendamento💈</h1>
+    <img src="imagem/logo1.png" class="logo">
+    
     <h2>Agende Seu Horário</h2>
 
     <form method="POST">
@@ -165,7 +179,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <button type="submit">Entrar</button>
 
         <a href="novo_cliente.php" class="novo-btn">Sou novo cliente</a>
-        <a href="recuperar_senha.php" class="link-recuperar">esqueci minha senha</a>
+        <a href="recuperar_senha.php" class="link-recuperar">Esqueci minha senha</a>
 
     </form>
 

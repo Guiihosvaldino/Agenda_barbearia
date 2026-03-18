@@ -15,28 +15,33 @@ $nome = $_SESSION['profissional_nome'];
     <title>Área do Profissional</title>
 
 <style>
-body {
-    margin: 0;
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
-    font-family: 'Segoe UI', Arial;
-    color: white;
-}
+    body {
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0;
+        padding: 0;
+        color: #fff;
+        }
 
-.menu {
+     .menu {
     background: #0d2a52;
     padding: 14px 25px;
     display: flex;
     gap: 25px;
+    font-size: 1.1em;
     position: sticky;
     top: 0;
+    z-index: 50;
 }
+
 .menu a {
     color: #fff;
-    font-weight: bold;
     text-decoration: none;
-    padding: 6px 10px;
+    padding: 6px 12px;
+    font-weight: bold;
     border-radius: 6px;
 }
+
 .menu a:hover {
     background: #1e3c72;
 }
@@ -69,6 +74,13 @@ h1 {
 .option-btn:hover {
     background: #2a5298;
 }
+    .logo {
+        width: 350px; 
+        margin-bottom: -100px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        }
 </style>
 
 </head>
@@ -85,7 +97,8 @@ h1 {
 
 
 <div class="container">
-    <h1>Bem-vindo, <?= $nome ?> 👋</h1>
+        <img src="../../frontend/imagem/logo1.png" class="logo">
+    <h1>Bem-vindo, <?= $nome ?> </h1>
     <a class="option-btn" href="profissional_agendar.php">➕ Novo Agendamento</a>
     <a class="option-btn" href="profissional_agenda.php">📅 Ver minha agenda</a>
     <a class="option-btn" href="profissional_perfil.php">👤 Editar meu perfil</a>

@@ -43,28 +43,33 @@ foreach ($resumoServicos as $item) {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-body {
-    margin: 0;
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
-    font-family: 'Segoe UI';
-    color: white;
-}
+    body {
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0;
+        padding: 0;
+        color: #fff;
+        }
 
-.menu {
+     .menu {
     background: #0d2a52;
     padding: 14px 25px;
     display: flex;
     gap: 25px;
+    font-size: 1.1em;
     position: sticky;
     top: 0;
+    z-index: 50;
 }
+
 .menu a {
     color: #fff;
-    font-weight: bold;
     text-decoration: none;
-    padding: 6px 10px;
+    padding: 6px 12px;
+    font-weight: bold;
     border-radius: 6px;
 }
+
 .menu a:hover {
     background: #1e3c72;
 }
@@ -94,6 +99,54 @@ h1 {
 canvas {
     margin-top: 20px;
 }
+
+        form {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        form label {
+            font-weight: bold;
+            color: #1e3c72;
+        }
+
+        form input {
+            padding: 8px 12px;
+            border: 2px solid #1e3c72;
+            border-radius: 6px;
+            font-size: 1em;
+        }
+
+        form input:focus {
+            outline: none;
+            border-color: #2a5298;
+            box-shadow: 0 0 5px rgba(42, 82, 152, 0.3);
+        }
+
+        form button {
+            padding: 8px 20px;
+            background: #1e3c72;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        form button:hover {
+            background: #2a5298;
+        }
+       .logo {
+        width: 350px;   /* quase o tamanho do formulário */
+        margin-bottom: -70px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        }
 </style>
 </head>
 <body>
@@ -104,20 +157,21 @@ canvas {
     <a href="profissional_perfil.php">👤 Meu Perfil</a>
     <a href="profissional_estatistica.php">📊 Estatísticas</a>
     <a href="profissional_agendar.php">➕ Novo Agendamento</a>
-    <a href="profissional_login.php">🚪 Sair</a>/a>
+    <a href="profissional_login.php">🚪 Sair</a>
 </div>
 
 <div class="container">
-
+        <img src="../../frontend/imagem/logo1.png" class="logo">
 <h1>📊 Estatísticas de <?= $mes ?>/<?= $ano ?></h1>
 
-<!-- FILTRO DE MÊS/ANO -->
+
 <form method="GET">
     <label>Mês:</label>
     <input type="number" name="mes" min="1" max="12" value="<?= $mes ?>">
     <label>Ano:</label>
     <input type="number" name="ano" value="<?= $ano ?>">
     <button type="submit">Filtrar</button>
+   
 </form>
 
 <br>
@@ -148,15 +202,15 @@ canvas {
 <canvas id="graficoBarras" height="120"></canvas>
 
 <script>
-// Dados enviados pelo PHP
+
 const servicosNomes = <?= json_encode($servicosNomes) ?>;
 const servicosQtd = <?= json_encode($servicosQtd) ?>;
 const servicosTotais = <?= json_encode($servicosTotais) ?>;
 
-// 🎨 cores automáticas
+
 const cores = [
-    "#1e3c72","#2a5298","#3c6db5","#547ec0",
-    "#7699d4","#9bb6e8","#c3d3f9","#d8e3ff"
+    "#1e723e","#2a5298","#b53c3c","#c0b754",
+    "#0c9132","#ae9be8","#c84e4e","#b3b324"
 ];
 
 // === PIE CHART ===
@@ -188,6 +242,7 @@ new Chart(document.getElementById('graficoBarras'), {
             label: 'Quantidade realizada',
             data: servicosQtd,
             backgroundColor: "#1e3c72"
+            
         }]
     },
     options: {

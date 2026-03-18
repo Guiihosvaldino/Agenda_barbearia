@@ -131,6 +131,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         font-weight: bold;
         margin-bottom: 10px;
     }
+                .logo {
+        width: 350px;  
+        margin-bottom: -50px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        }
 </style>
 </head>
 <body>
@@ -140,6 +147,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </div>
 
 <div class="container">
+    <img src="../frontend/imagem/logo1.png" class="logo">
     <h2>💈 Redefinir Senha</h2>
 
     <form method="POST">

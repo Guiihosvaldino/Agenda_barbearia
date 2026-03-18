@@ -74,6 +74,13 @@
     a.btn:hover {
         transform: scale(1.03);
     }
+        .logo {
+        width: 350px;   /* quase o tamanho do formulário */
+        margin-bottom: -100px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        }
     </style>
 </head>
 <body>
@@ -82,7 +89,9 @@
     <a href="index.php">⟵ Voltar</a>
 </div>
 
+
 <div class="container">
+    <img src="../frontend/imagem/logo1.png" class="logo">
     <h2>✅ Agendamento realizado com sucesso!</h2>
     <p>Seu horário foi registrado no sistema. Aguarde a confirmação do salão.</p>
     <a class="btn" href="index.php">Voltar para início</a>

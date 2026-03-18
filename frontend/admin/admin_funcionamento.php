@@ -27,19 +27,21 @@ $funcionamento = listarFuncionamento();
 <title>Funcionamento 💈</title>
 
 <style>
-body {
-    margin: 0;
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
-    font-family: 'Segoe UI', Arial, sans-serif;
-}
+    body {
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0;
+        padding: 0;
+        color: #fff;
+        }
 
 /* MENU SUPERIOR */
-.menu {
+     .menu {
     background: #0d2a52;
     padding: 14px 25px;
     display: flex;
-    gap: 20px;
-    font-size: 1.05em;
+    gap: 25px;
+    font-size: 1.1em;
     position: sticky;
     top: 0;
     z-index: 50;
@@ -51,7 +53,6 @@ body {
     padding: 6px 12px;
     font-weight: bold;
     border-radius: 6px;
-    transition: 0.2s;
 }
 
 .menu a:hover {
@@ -133,6 +134,13 @@ button:hover {
     transform: scale(1.03);
     background: linear-gradient(135deg, #2a5298, #1e3c72);
 }
+    .logo {
+        width: 350px;   /* quase o tamanho do formulário */
+        margin-bottom: -100px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        }
 </style>
 
 </style>
@@ -141,7 +149,6 @@ button:hover {
 <div class="menu">
     <a href="agenda.php">📅 Agenda</a>
     <a href="financeiro.php">💰 Financeiro</a>
-    <a href="admin_agendar.php">➕ Novo Agendamento</a>
     <a href="admin_profissionais.php">👤 Profissionais</a>
     <a href="admin_servicos.php">💈 Serviços</a>
     <a href="admin_funcionamento.php">⏰ Funcionamento</a>
@@ -150,6 +157,8 @@ button:hover {
 
 
 <div class="container">
+    
+    <img src="../../frontend/imagem/logo1.png" class="logo">
 
 <h2>Funcionamento da Barbearia</h2>
 <?php if ($msg): ?>
