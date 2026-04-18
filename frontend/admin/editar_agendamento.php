@@ -1,36 +1,42 @@
 <?php
 require_once("../../backend/conexao.php");
-
-// Importante: Verifique se sua conexão no conexao.php está na variável $conn ou $mysqli
-// Se estiver usando PDO, o código muda levemente. Aqui fiz para MySQLi:
+global $pdo;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Recebendo os dados do Modal
-    $id_agenda = $_POST['id_agendamento']; // Este vem do campo oculto 'edit_id'
-    $data = $_POST['data'];
-    $hora = $_POST['hora'];
-    $id_servico = $_POST['id_servico'];
+    $id_agenda = isset($_POST['id_agenda']) ? intval($_POST['id_agenda']) : 0;
+    $data = $_POST['data'] ?? '';
+    $hora = $_POST['hora'] ?? '';
+    $id_servico = isset($_POST['id_servico']) ? intval($_POST['id_servico']) : 0;
 
-    // Query ajustada para sua tabela 'agenda' e coluna 'id_agenda'
-    $sql = "UPDATE agenda SET 
-            data = ?, 
-            hora = ?, 
-            id_servico = ? 
-            WHERE id_agenda = ?";
-
-    $stmt = $conn->prepare($sql);
-    
-    // "ssii" significa: string (data), string (hora), integer (serviço), integer (id_agenda)
-    $stmt->bind_param("ssii", $data, $hora, $id_servico, $id_agenda);
-
-    if ($stmt->execute()) {
-        // Redireciona de volta para a agenda na mesma data que você estava vendo
-        header("Location: agenda.php?data=$data&status=editado");
-        exit();
-    } else {
-        echo "Erro ao atualizar banco: " . $conn->error;
+    // --- VALIDAÇÃO DE CAMPOS VAZIOS ---
+    if (empty($data) || empty($hora) || $id_servico <= 0) {
+        echo "<script>
+                alert('Erro: Todos os campos (Data, Hora e Serviço) devem ser preenchidos!');
+                window.history.back();
+              </script>";
+        exit;
     }
 
-    $stmt->close();
+    if ($id_agenda > 0) {
+        try {
+            $sql = "UPDATE agenda SET 
+                    data = :data, 
+                    hora = :hora, 
+                    id_servico = :id_s 
+                    WHERE id_agenda = :id_a";
+
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                ':data' => $data,
+                ':hora' => $hora,
+                ':id_s'  => $id_servico,
+                ':id_a'  => $id_agenda
+            ]);
+
+            header("Location: agenda.php?data=$data&status=editado");
+            exit();
+        } catch (PDOException $e) {
+            die("Erro crítico no banco de dados. Verifique se o serviço selecionado existe.");
+        }
+    }
 }
-?>

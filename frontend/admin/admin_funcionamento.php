@@ -36,7 +36,7 @@ $funcionamento = listarFuncionamento();
         }
 
 /* MENU SUPERIOR */
-     .menu {
+.menu {
     background: #0d2a52;
     padding: 14px 25px;
     display: flex;
@@ -46,8 +46,7 @@ $funcionamento = listarFuncionamento();
     top: 0;
     z-index: 50;
 }
-
-.menu a {
+        .menu a {
     color: #fff;
     text-decoration: none;
     padding: 6px 12px;

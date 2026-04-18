@@ -97,8 +97,7 @@ body {
     top: 0;
     z-index: 50;
 }
-
-.menu a {
+        .menu a {
     color: #fff;
     text-decoration: none;
     padding: 6px 12px;
