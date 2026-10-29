@@ -27,12 +27,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
 <title>Login Admin 💈</title>
 <style>
     body {
     margin: 0;
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    background-image: url('../imagem/FUNDO.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     font-family: 'Segoe UI', Arial, sans-serif;
     color: #fff;
     min-height: 100vh;
@@ -40,30 +45,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     align-items: center;
     justify-content: center;
     }
+    body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 0;
+    }
     .container {
-    background: #fff;
+            position: relative;
+            z-index: 1;
+            background: #fff;
             color: #333;
-            width: 550px;
-            padding: 35px 30px;
-            border-radius: 14px;
+            width: 400px;
+            padding: 40px 30px;
+            border-radius: 12px;
             box-shadow: 0 6px 18px rgba(0,0,0,0.25);
             text-align: center;
-            
-    
+            box-sizing: border-box;
     }
-        .logo {
-    width: 340px; 
-    margin-bottom: -70px;
-        }
+    .logo {
+            width: 220px; 
+            margin: 0 auto 20px auto;
+            display: block;
+    }
     h2 { 
     text-align: center; 
-    color: #1e3c72; 
+    color: #660a18; 
     }
-            input {
-            padding: 12px;
-            border-radius: 8px;
-            border: 2px solid #aaa;
-            font-size: 1.3em;
+        input {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #aaa;
+            font-size: 1em;
+            box-sizing: border-box;
+            width: 100%;
+        }
+        input:focus {
+            outline: none;
+            border-color: #8a1224;
+            box-shadow: 0 0 5px rgba(138, 18, 36, 0.35);
         }
         label {
             text-align: left;
@@ -72,21 +93,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     button {
         padding: 12px;
-        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        background: linear-gradient(135deg, #660a18, #8a1224);
         color: #fff;
         border: none;
-        border-radius: 8px;
-        font-size: 1.5em;
+        border-radius: 6px;
+        font-size: 1.05em;
         font-weight: bold;
         cursor: pointer;
         transition: 0.2s;
+        width: 100%;
     }
     button:hover { 
         transform: scale(1.03); 
     }
     a { 
         text-decoration: none; 
-        color: #1e3c72; 
+        color: #660a18; 
         font-weight: bold; 
         text-align: center; 
         display: block;
@@ -107,6 +129,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             gap: 15px;
             margin-top: 10px;
         }
+
+/* ========== RESPONSIVIDADE (CELULARES) ========== */
+@media (max-width: 768px) {
+    .container {
+        width: 90% !important;
+        max-width: none !important;
+        margin: 20px auto !important;
+        padding: 20px !important;
+    }
+    .menu {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 10px !important;
+        padding: 15px !important;
+    }
+    .menu a {
+        width: 100% !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+    }
+    .logo {
+        width: 100% !important;
+        max-width: 250px !important;
+        margin-bottom: -40px !important;
+    }
+    table {
+        display: block !important;
+        overflow-x: auto !important;
+        white-space: nowrap !important;
+    }
+}
 </style>
 </head>
 <body>

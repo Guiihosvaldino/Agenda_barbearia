@@ -1,5 +1,11 @@
 <?php
 require_once("../../backend/funcionamento.php");
+session_start();
+
+if (!isset($_SESSION['admin_id'])) {
+    header("Location: login_admin.php");
+    exit();
+}
 
 $msg = "";
 
@@ -23,21 +29,33 @@ $funcionamento = listarFuncionamento();
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
 <title>Funcionamento 💈</title>
 
 <style>
     body {
-        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        background-image: url('../imagem/FUNDO.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
         font-family: Arial, Helvetica, sans-serif;
         margin: 0;
         padding: 0;
         color: #fff;
         }
+    body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.45);
+        z-index: 0;
+    }
 
 /* MENU SUPERIOR */
 .menu {
-    background: #0d2a52;
+    background: #380309;
     padding: 14px 25px;
     display: flex;
     gap: 25px;
@@ -55,13 +73,15 @@ $funcionamento = listarFuncionamento();
 }
 
 .menu a:hover {
-    background: #1e3c72;
+    background: #660a18;
 }
 
 /* CONTAINER */
 .container {
+    position: relative;
+    z-index: 1;
     background: #ffffff;
-    max-width: 850px;
+    max-width: 900px;
     margin: 40px auto;
     padding: 30px 35px;
     border-radius: 16px;
@@ -71,7 +91,7 @@ $funcionamento = listarFuncionamento();
 
 h2 {
     text-align: center;
-    color: #1e3c72;
+    color: #660a18;
     margin-bottom: 25px;
     font-size: 2em;
 }
@@ -95,7 +115,7 @@ table {
 }
 
 th {
-    background: #1e3c72;
+    background: #660a18;
     color: #fff;
     padding: 12px;
 }
@@ -119,7 +139,7 @@ input[type="time"] {
 button {
     width: 100%;
     padding: 12px;
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    background: linear-gradient(135deg, #660a18, #8a1224);
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -131,28 +151,53 @@ button {
 
 button:hover {
     transform: scale(1.03);
-    background: linear-gradient(135deg, #2a5298, #1e3c72);
+    background: linear-gradient(135deg, #8a1224, #660a18);
 }
     .logo {
         width: 350px;   /* quase o tamanho do formulário */
-        margin-bottom: -100px;
+        margin-bottom: -70px;
         margin-left: auto;
         margin-right: auto;
         display: block;
         }
+
+/* ========== RESPONSIVIDADE (CELULARES) ========== */
+@media (max-width: 768px) {
+    .container {
+        width: 90% !important;
+        max-width: none !important;
+        margin: 20px auto !important;
+        padding: 20px !important;
+    }
+    .menu {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 10px !important;
+        padding: 15px !important;
+    }
+    .menu a {
+        width: 100% !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+    }
+    .logo {
+        width: 100% !important;
+        max-width: 250px !important;
+        margin-bottom: -40px !important;
+    }
+    table {
+        display: block !important;
+        overflow-x: auto !important;
+        white-space: nowrap !important;
+    }
+}
 </style>
 
 </style>
+    <link rel="stylesheet" href="../css/menu-lateral.css">
 </head>
 <body>
-<div class="menu">
-    <a href="agenda.php">📅 Agenda</a>
-    <a href="financeiro.php">💰 Financeiro</a>
-    <a href="admin_profissionais.php">👤 Profissionais</a>
-    <a href="admin_servicos.php">💈 Serviços</a>
-    <a href="admin_funcionamento.php">⏰ Funcionamento</a>
-    <a href="login_admin.php">🚪 Sair</a>
-</div>
+<?php require __DIR__ . '/menu_lateral.php'; ?>
 
 
 <div class="container">
@@ -178,7 +223,7 @@ button:hover {
 <?php foreach ($funcionamento as $i => $f): ?>
 <tr>
 <td>
-    <?= $f['dia_semana'] ?>
+    <strong><?= $f['dia_semana'] ?></strong>
     <input type="hidden" name="dia[]" value="<?= $f['dia_semana'] ?>">
 </td>
 
@@ -199,7 +244,7 @@ button:hover {
 </table>
 
 <br>
-<button type="submit">Salvar</button>
+<button type="submit">Salvar Alterações</button>
 
 </form>
 

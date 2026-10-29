@@ -39,47 +39,47 @@ function funcionamentoPorData($data) {
 function salvarAgendamento($idCliente, $idProfissional, $idServico, $data, $hora) {
     global $pdo;
 
-    // 🔒 VERIFICA SE A BARBEARIA FUNCIONA NO DIA
-    $func = funcionamentoPorData($data);
+    // 1. Pegar a duração do serviço atual
+    $stmt = $pdo->prepare("SELECT duracao FROM servico WHERE id_servico = ?");
+    $stmt->execute([$idServico]);
+    $duracaoNova = $stmt->fetchColumn();
 
-    if (!$func || $func['ativo'] != 1) {
-        return "FECHADO";
-    }
+    $inicioNovo = $hora; // Ex: "13:00"
+    $fimNovo = date("H:i:s", strtotime($hora) + ($duracaoNova * 60));
 
-    // 🔒 VERIFICA HORÁRIO
-    if ($hora < $func['abre'] || $hora > $func['fecha']) {
-        return "FORA_HORARIO";
-    }
-
-    // 🔒 VERIFICA SE HORÁRIO JÁ ESTÁ OCUPADO
+    // 2. BUSCAR CONFLITOS
+    // Verifica se existe algum agendamento onde o horário se sobrepõe
     $stmt = $pdo->prepare("
-        SELECT 1 FROM agenda 
-        WHERE id_profissional = ? 
-        AND data = ? 
-        AND hora = ?
+        SELECT a.hora, s.duracao 
+        FROM agenda a
+        JOIN servico s ON a.id_servico = s.id_servico
+        WHERE a.data = ? 
+        AND a.id_profissional = ? 
+        AND a.status != 'CANCELADO'
     ");
-    $stmt->execute([$idProfissional, $data, $hora]);
+    $stmt->execute([$data, $idProfissional]);
+    $agendamentos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    if ($stmt->rowCount() > 0) {
-        return "OCUPADO";
+    foreach ($agendamentos as $ag) {
+        $inicioExistente = $ag['hora'];
+        $fimExistente = date("H:i:s", strtotime($inicioExistente) + ($ag['duracao'] * 60));
+
+        // Lógica de colisão de horários
+        if ($inicioNovo < $fimExistente && $fimNovo > $inicioExistente) {
+            return "OCUPADO"; // Encontrou um conflito de horário!
+        }
     }
 
-    // ✅ INSERE AGENDAMENTO
-    $stmt = $pdo->prepare("
-        INSERT INTO agenda 
-        (id_cliente, id_profissional, id_servico, data, hora, status) 
-        VALUES (?, ?, ?, ?, ?, 'PENDENTE')
-    ");
-
-    $stmt->execute([
-        $idCliente,
-        $idProfissional,
-        $idServico,
-        $data,
-        $hora
-    ]);
-
-    return true;
+    // 3. SE CHEGOU AQUI, ESTÁ LIVRE. PODE SALVAR.
+    try {
+        $sql = "INSERT INTO agenda (id_cliente, id_profissional, id_servico, data, hora, status) 
+                VALUES (?, ?, ?, ?, ?, 'PENDENTE')";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$idCliente, $idProfissional, $idServico, $data, $hora]);
+        return true;
+    } catch (Exception $e) {
+        return false;
+    }
 }
 
 /**

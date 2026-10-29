@@ -18,6 +18,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // ⚠️ TESTE ACADÊMICO
         // echo "Token: $token";
 
+        /*
+        // ====================================================================================
+        // FUNÇÃO DE ENVIO DE WHATSAPP (DESCOMENTE QUANDO O SISTEMA ESTIVER HOSPEDADO)
+        // Substitua a URL e os dados de autenticação pela API que você for utilizar (Ex: Z-API, Evolution, Twilio)
+        // ====================================================================================
+        $mensagem = "💈 Olá! Seu token para recuperar a senha na Barbearia é: *" . $token . "*";
+        $url_api = "https://sua-api-whatsapp.com/v1/messages"; // Coloque a URL da sua API aqui
+        
+        $dados = [
+            "number" => $celular, // O número do cliente digitado no formulário
+            "message" => $mensagem
+        ];
+        
+        $ch = curl_init($url_api);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($dados));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'Authorization: Bearer SEU_TOKEN_DE_API_AQUI' // Seu token de acesso da API
+        ]);
+        
+        $resultado = curl_exec($ch);
+        curl_close($ch);
+        // ====================================================================================
+        */
+
         header("Location: redefinir_senha.php?id=" . $cliente['id_cliente']);
         exit;
 
@@ -31,21 +58,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
     <title>Recuperar Senha 💈</title>
 
     <style>
 
         body {
             margin: 0;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            background-image: url('imagem/FUNDO.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
             color: #fff;
             min-height: 100vh;
         }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: 0;
+        }
 
         .menu {
-            background: #0d2a52;
+            background: #380309;
             padding: 14px 25px;
             display: flex;
             gap: 25px;
@@ -64,10 +103,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         .menu a:hover {
-            background: #1e3c72;
+            background: #660a18;
         }
 
         .container {
+            position: relative;
+            z-index: 1;
             background: #ffffff;
             max-width: 450px;
             margin: 60px auto;
@@ -79,7 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         h2 {
             text-align: center;
-            color: #1e3c72;
+            color: #660a18;
             margin-bottom: 30px;
             font-size: 2em;
         }
@@ -99,7 +140,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         button {
             padding: 12px;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            background: linear-gradient(135deg, #660a18, #8a1224);
             color: #fff;
             border: none;
             border-radius: 8px;
@@ -130,7 +171,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         margin-right: auto;
         display: block;
         }
-    </style>
+    
+/* ========== RESPONSIVIDADE (CELULARES) ========== */
+@media (max-width: 768px) {
+    .container {
+        width: 90% !important;
+        max-width: none !important;
+        margin: 20px auto !important;
+        padding: 20px !important;
+    }
+    .menu {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 10px !important;
+        padding: 15px !important;
+    }
+    .menu a {
+        width: 100% !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+    }
+    .logo {
+        width: 100% !important;
+        max-width: 250px !important;
+        margin-bottom: -40px !important;
+    }
+    table {
+        display: block !important;
+        overflow-x: auto !important;
+        white-space: nowrap !important;
+    }
+}
+</style>
 </head>
 <body>
 

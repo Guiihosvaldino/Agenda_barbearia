@@ -209,6 +209,31 @@ function resumoPorServico($idProf, $ano, $mes) {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function clientesAtendidosMes($idProf, $ano, $mes) {
+    global $pdo;
+
+    $stmt = $pdo->prepare("
+        SELECT 
+            c.nome AS cliente,
+            c.celular,
+            a.data,
+            a.hora,
+            s.nome AS servico,
+            s.valor
+        FROM agenda a
+        INNER JOIN cliente c ON a.id_cliente = c.id_cliente
+        INNER JOIN servico s ON a.id_servico = s.id_servico
+        WHERE a.id_profissional = ?
+        AND a.status = 'CONFIRMADO'
+        AND YEAR(a.data) = ?
+        AND MONTH(a.data) = ?
+        ORDER BY a.data DESC, a.hora DESC
+    ");
+
+    $stmt->execute([$idProf, $ano, $mes]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 function salvarTokenResetSenha($id, $token) {
     global $pdo;
     $stmt = $pdo->prepare("UPDATE profissional SET reset_token = ? WHERE id_profissional = ?");
@@ -237,16 +262,25 @@ function atualizarSenhaProfissional($id, $senha) {
     return $stmt->execute([$hash, $id]);
 }
 
-function atualizarPerfilProfissional($id, $nome, $especialidade, $email) {
+function atualizarPerfilProfissional($id, $nome, $especialidade, $email, $almoco_inicio = null, $almoco_fim = null) {
     global $pdo;
+
+    // AUTO-MIGRAÇÃO: Adiciona colunas de almoço se não existirem no profissional
+    try {
+        $pdo->query("SELECT almoco_inicio FROM profissional LIMIT 1");
+    } catch (Exception $e) {
+        try {
+            $pdo->exec("ALTER TABLE profissional ADD COLUMN almoco_inicio TIME DEFAULT NULL, ADD COLUMN almoco_fim TIME DEFAULT NULL");
+        } catch (Exception $ex) {}
+    }
 
     $stmt = $pdo->prepare("
         UPDATE profissional
-        SET nome = ?, especialidade = ?, email = ?
+        SET nome = ?, especialidade = ?, email = ?, almoco_inicio = ?, almoco_fim = ?
         WHERE id_profissional = ?
     ");
 
-    return $stmt->execute([$nome, $especialidade, $email, $id]);
+    return $stmt->execute([$nome, $especialidade, $email, $almoco_inicio, $almoco_fim, $id]);
 }
 
 

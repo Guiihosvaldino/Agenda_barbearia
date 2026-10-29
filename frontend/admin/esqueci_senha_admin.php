@@ -21,18 +21,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
 <title>Recuperar Senha Admin 💈</title>
 <style>
     body { 
         margin: 0; 
-        background: linear-gradient(135deg, #1e3c72, #2a5298); 
+        background-image: url('../imagem/FUNDO.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
         font-family: 'Segoe UI', Arial; 
         color: #fff; min-height: 100vh; 
         display: flex; align-items: center; 
         justify-content: center; 
     }
+    body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.45);
+        z-index: 0;
+    }
     .container { 
+        position: relative;
+        z-index: 1;
         background: #fff; 
         color: #222; max-width: 550px; 
         width: 100%; padding: 30px 35px; 
@@ -48,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
     h2 { 
         text-align: center; 
-        color: #1e3c72; 
+        color: #660a18; 
     }
     input { 
         padding: 12px; 
@@ -58,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     button { 
         padding: 12px; 
-        background: linear-gradient(135deg, #1e3c72, #2a5298); 
+        background: linear-gradient(135deg, #660a18, #8a1224); 
         color: #fff; 
         border: none; 
         border-radius: 8px; 
@@ -72,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     a { 
         text-decoration: none; 
-        color: #1e3c72; 
+        color: #660a18; 
         font-weight: bold; 
         text-align: center; 
         display: block; 
@@ -95,6 +109,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         text-align: center; 
         font-weight: bold; 
         }
+
+/* ========== RESPONSIVIDADE (CELULARES) ========== */
+@media (max-width: 768px) {
+    .container {
+        width: 90% !important;
+        max-width: none !important;
+        margin: 20px auto !important;
+        padding: 20px !important;
+    }
+    .menu {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 10px !important;
+        padding: 15px !important;
+    }
+    .menu a {
+        width: 100% !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+    }
+    .logo {
+        width: 100% !important;
+        max-width: 250px !important;
+        margin-bottom: -40px !important;
+    }
+    table {
+        display: block !important;
+        overflow-x: auto !important;
+        white-space: nowrap !important;
+    }
+}
 </style>
 </head>
 <body>

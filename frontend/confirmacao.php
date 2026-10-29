@@ -1,21 +1,33 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
     <title>Confirmação - Barbearia 💈</title>
 
     <style>
     /* ——— IDENTIDADE VISUAL UNIFICADA ——— */
     body {
         margin: 0;
-        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        background-image: url('imagem/FUNDO.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
         font-family: 'Segoe UI', Arial, sans-serif;
         color: #fff;
         min-height: 100vh;
     }
+    body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.45);
+        z-index: 0;
+    }
 
     .menu {
-        background: #0d2a52;
+        background: #380309;
         padding: 14px 25px;
         display: flex;
         gap: 25px;
@@ -34,10 +46,12 @@
     }
 
     .menu a:hover {
-        background: #1e3c72;
+        background: #660a18;
     }
 
     .container {
+        position: relative;
+        z-index: 1;
         background: #ffffff;
         max-width: 600px;
         margin: 60px auto;
@@ -49,7 +63,7 @@
     }
 
     h2 {
-        color: #1e3c72;
+        color: #660a18;
         margin-bottom: 20px;
         font-size: 2em;
     }
@@ -64,7 +78,7 @@
         display: inline-block;
         text-decoration: none;
         color: #fff;
-        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        background: linear-gradient(135deg, #660a18, #8a1224);
         padding: 12px 28px;
         border-radius: 8px;
         font-weight: bold;
@@ -81,7 +95,38 @@
         margin-right: auto;
         display: block;
         }
-    </style>
+    
+/* ========== RESPONSIVIDADE (CELULARES) ========== */
+@media (max-width: 768px) {
+    .container {
+        width: 90% !important;
+        max-width: none !important;
+        margin: 20px auto !important;
+        padding: 20px !important;
+    }
+    .menu {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 10px !important;
+        padding: 15px !important;
+    }
+    .menu a {
+        width: 100% !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+    }
+    .logo {
+        width: 100% !important;
+        max-width: 250px !important;
+        margin-bottom: -40px !important;
+    }
+    table {
+        display: block !important;
+        overflow-x: auto !important;
+        white-space: nowrap !important;
+    }
+}
+</style>
 </head>
 <body>
 

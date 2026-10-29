@@ -1,12 +1,8 @@
 <?php
 require_once("../../backend/conexao.php");
 require_once("../../backend/cliente.php"); 
+require_once("../../backend/pacote.php");
 session_start();
-
-// 1. Verificação de Segurança para o Administrador
-if (!isset($_SESSION['admin_id'])) { 
-    exit("Acesso negado. Apenas administradores podem realizar esta ação."); 
-}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Pegamos o profissional selecionado no modal (no admin, pode ser qualquer um)
@@ -16,6 +12,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $tipo = $_POST['tipo_final']; // 'agendamento' ou 'bloqueio'
 
     try {
+        if ($tipo !== 'bloqueio' && !empty($_POST['abater_corte'])) {
+            garantirTabelaUsosPacote();
+        }
         $pdo->beginTransaction();
 
         if ($tipo === 'bloqueio') {
@@ -79,6 +78,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 ':data' => $data,
                 ':hora' => $hora_inicio
             ]);
+
+            // Se vinculou com pacote e marcou para abater corte
+            if (!empty($_POST['abater_corte']) && !empty($_POST['id_pacote_vinculado'])) {
+                $id_agenda = (int)$pdo->lastInsertId();
+                if (!registrarUsoPacoteNoAgendamento(
+                    (int)$_POST['id_pacote_vinculado'],
+                    $id_agenda,
+                    (int)$id_cliente,
+                    $data,
+                    $hora_inicio
+                )) {
+                    throw new Exception("O pacote selecionado não está aberto ou não possui atendimentos disponíveis.");
+                }
+            } elseif (!empty($_POST['abater_corte'])) {
+                throw new Exception("Selecione um pacote válido para abater o atendimento.");
+            }
         }
 
         $pdo->commit();
@@ -87,7 +102,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
 
     } catch (Exception $e) {
-        $pdo->rollBack();
+        if ($pdo->inTransaction()) {
+            $pdo->rollBack();
+        }
         header("Location: agenda.php?data=$data&erro=1&msg=" . urlencode($e->getMessage()));
         exit;
     }

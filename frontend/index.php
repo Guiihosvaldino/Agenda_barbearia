@@ -23,12 +23,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
     <title>Login - Barbearia</title>
 
     <style>
         body {
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            background-image: url('imagem/FUNDO.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -39,29 +44,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             color: #fff;
         }
 
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 0;
+        }
+
         .container {
-        
+            position: relative;
+            z-index: 1;
             background: #fff;
             color: #333;
-            width: 560px;
-            padding: 35px 20px;
-            border-radius: 14px;
+            width: 400px;
+            padding: 40px 30px;
+            border-radius: 12px;
             box-shadow: 0 6px 18px rgba(0,0,0,0.25);
             text-align: center;
+            box-sizing: border-box;
         }
 
         h1 {
             margin: 0 0 10px;
-            color: #1e3c72;
-            font-size: 1.8em;
+            color: #660a18;
+            font-size: 1.5em;
         }
 
         h2 {
             text-align: center;
             margin-top: 0;
-            margin-bottom: 25px;
-            color: #2a5298;
-            font-size: 1.3em;
+            margin-bottom: 20px;
+            color: #8a1224;
+            font-size: 1.2em;
         }
 
         .erro {
@@ -82,21 +97,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         input {
-            padding: 12px;
-            border-radius: 8px;
-            border: 2px solid #aaa;
-            font-size: 1.3em;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #aaa;
+            font-size: 1em;
+            box-sizing: border-box;
+            width: 100%;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #8a1224;
+            box-shadow: 0 0 5px rgba(138, 18, 36, 0.35);
         }
 
         button {
             width: 100%;
             padding: 12px 0;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            background: linear-gradient(135deg, #660a18, #8a1224);
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             color: white;
             font-weight: bold;
-            font-size: 1.1em;
+            font-size: 1.05em;
             cursor: pointer;
             transition: 0.2s;
             margin-bottom: 12px;
@@ -104,13 +127,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         button:hover {
             transform: scale(1.03);
-            background: linear-gradient(135deg, #2a5298, #1e3c72);
+            background: linear-gradient(135deg, #8a1224, #660a18);
         }
 
         .novo-btn {
             display: block;
             text-align: center;
-            background: #1e3c72;
+            background: #660a18;
             padding: 10px;
             border-radius: 8px;
             color: white;
@@ -120,14 +143,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         .novo-btn:hover {
-            background: #16315c;
+            background: #480610;
             transform: scale(1.02);
         }
         .link-recuperar {
             margin-top: -10px;
             text-align: right;
             font-size: 0.9em;
-            color: #1e3c72;
+            color: #660a18;
             text-decoration: none;
         }
 
@@ -135,8 +158,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             text-decoration: underline;
         }
         .logo {
-    width: 340px; 
-    margin-bottom: -70px;
+            width: 300px; 
+            margin-bottom: -40px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
         }
         form {
             display: flex;
@@ -146,14 +172,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         a { 
         text-decoration: none; 
-        color: #1e3c72; 
+        color: #660a18; 
         font-weight: bold; 
         text-align: center; 
         display: block;
         margin-top: 10px; 
     }
 
-    </style>
+    
+/* ========== RESPONSIVIDADE (CELULARES) ========== */
+@media (max-width: 768px) {
+    .container {
+        width: 90% !important;
+        max-width: none !important;
+        margin: 20px auto !important;
+        padding: 20px !important;
+    }
+    .menu {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 10px !important;
+        padding: 15px !important;
+    }
+    .menu a {
+        width: 100% !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+    }
+    .logo {
+        width: 100% !important;
+        max-width: 250px !important;
+        margin-bottom: -40px !important;
+    }
+    table {
+        display: block !important;
+        overflow-x: auto !important;
+        white-space: nowrap !important;
+    }
+}
+</style>
 </head>
 
 <body>

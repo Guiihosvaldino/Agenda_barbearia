@@ -1,5 +1,6 @@
 <?php
 require_once("../../backend/conexao.php");
+require_once("../../backend/pacote.php");
 global $pdo;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -19,6 +20,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($id_agenda > 0) {
         try {
+            garantirTabelaUsosPacote();
+            $pdo->beginTransaction();
+
+            $stmtCliente = $pdo->prepare("SELECT id_cliente FROM agenda WHERE id_agenda = ?");
+            $stmtCliente->execute([$id_agenda]);
+            $id_cliente = $stmtCliente->fetchColumn();
+            if (!$id_cliente) {
+                throw new Exception("Agendamento não encontrado.");
+            }
+
             $sql = "UPDATE agenda SET 
                     data = :data, 
                     hora = :hora, 
@@ -33,10 +44,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 ':id_a'  => $id_agenda
             ]);
 
+            $usoSincronizado = sincronizarUsoPacoteComAgendamento(
+                $id_agenda,
+                (int)$id_cliente,
+                $data,
+                $hora
+            );
+
+            // Se marcou para abater corte do pacote
+            if (!$usoSincronizado && !empty($_POST['abater_corte'])) {
+                if (empty($_POST['id_pacote_vinculado'])) {
+                    throw new Exception("Selecione um pacote válido para abater o atendimento.");
+                }
+                if (!registrarUsoPacoteNoAgendamento(
+                    (int)$_POST['id_pacote_vinculado'],
+                    $id_agenda,
+                    (int)$id_cliente,
+                    $data,
+                    $hora
+                )) {
+                    throw new Exception("O pacote selecionado não está aberto ou não possui atendimentos disponíveis.");
+                }
+            }
+
+            $pdo->commit();
             header("Location: agenda.php?data=$data&status=editado");
             exit();
-        } catch (PDOException $e) {
-            die("Erro crítico no banco de dados. Verifique se o serviço selecionado existe.");
+        } catch (Exception $e) {
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+            header("Location: agenda.php?data=" . urlencode($data) . "&erro=1&msg=" . urlencode($e->getMessage()));
+            exit();
         }
     }
 }

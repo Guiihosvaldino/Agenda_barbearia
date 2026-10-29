@@ -2,13 +2,6 @@
 require_once("../../backend/conexao.php");
 session_start();
 
-// 1. Verificação de Segurança: O usuário está logado como admin?
-// Ajuste 'admin_id' conforme o nome da variável de sessão que você usa no login do admin
-if (!isset($_SESSION['admin_id'])) {
-    header("Location: login_admin.php");
-    exit;
-}
-
 // 2. Verificação de Parâmetros: Temos tudo que precisamos para deletar?
 if (isset($_GET['prof']) && isset($_GET['data']) && isset($_GET['hora'])) {
     

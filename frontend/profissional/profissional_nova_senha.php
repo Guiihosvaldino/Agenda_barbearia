@@ -37,17 +37,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
     <title>Redefinir Senha</title>
     <style>
-        body { background: linear-gradient(135deg,#1e3c72,#2a5298); font-family:'Segoe UI',Arial,sans-serif; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; color:#fff; }
-        .card { background:#fff; color:#333; padding:30px; border-radius:14px; width:360px; text-align:center; }
+        body { background-image: url('../imagem/FUNDO.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed; font-family:'Segoe UI',Arial,sans-serif; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; color:#fff; }
+        body::before { content: ''; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 0; }
+        .card { position: relative; z-index: 1; background:#fff; color:#333; padding:30px; border-radius:14px; width:360px; text-align:center; }
         input { width:100%; padding:12px; border-radius:8px; border:1px solid #aaa; margin-bottom:15px; }
-        button { background:#1e3c72; color:#fff; padding:12px; border:none; border-radius:8px; cursor:pointer; font-weight:bold; width:100%; }
-        button:hover { background:#16315c; }
+        button { background:#660a18; color:#fff; padding:12px; border:none; border-radius:8px; cursor:pointer; font-weight:bold; width:100%; }
+        button:hover { background:#480610; }
         .msg { margin-bottom:15px; font-weight:bold; color:red; }
-        .msg a { color:#1e3c72; text-decoration:underline; }
-    </style>
+        .msg a { color:#660a18; text-decoration:underline; }
+    
+/* ========== RESPONSIVIDADE (CELULARES) ========== */
+@media (max-width: 768px) {
+    .container {
+        width: 90% !important;
+        max-width: none !important;
+        margin: 20px auto !important;
+        padding: 20px !important;
+    }
+    .menu {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 10px !important;
+        padding: 15px !important;
+    }
+    .menu a {
+        width: 100% !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+    }
+    .logo {
+        width: 100% !important;
+        max-width: 250px !important;
+        margin-bottom: -40px !important;
+    }
+    table {
+        display: block !important;
+        overflow-x: auto !important;
+        white-space: nowrap !important;
+    }
+}
+</style>
 </head>
 <body>
 <div class="card">

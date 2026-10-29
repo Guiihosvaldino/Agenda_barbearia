@@ -1,0 +1,131 @@
+.menu-lateral-toggle {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 1102;
+    display: flex;
+    width: 48px;
+    height: 48px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+    background: #380309;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+
+.menu-lateral-toggle span {
+    display: block;
+    width: 23px;
+    height: 2px;
+    border-radius: 2px;
+    background: #fff;
+}
+
+.menu-lateral-toggle:focus-visible,
+.menu-lateral button:focus-visible,
+.menu-lateral a:focus-visible {
+    outline: 3px solid #f5c46b;
+    outline-offset: 3px;
+}
+
+.menu-lateral-fundo {
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: rgba(0, 0, 0, 0.58);
+    cursor: pointer;
+}
+
+.menu-lateral {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 1101;
+    width: min(320px, 86vw);
+    min-height: 100vh;
+    padding: 82px 18px 24px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    color: #fff;
+    background: linear-gradient(180deg, #380309 0%, #210206 100%);
+    box-shadow: 8px 0 28px rgba(0, 0, 0, 0.35);
+}
+
+.menu-lateral[hidden],
+.menu-lateral-fundo[hidden] {
+    display: none !important;
+}
+
+.menu-lateral-cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding: 0 8px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    font: 600 1.1rem Arial, Helvetica, sans-serif;
+}
+
+.menu-lateral-fechar {
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 8px;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.12);
+    font-size: 1.7rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.menu-lateral-links {
+    display: grid;
+    gap: 6px;
+}
+
+.menu-lateral-links a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 46px;
+    padding: 10px 12px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    color: #fff;
+    font: 600 1rem Arial, Helvetica, sans-serif;
+    text-decoration: none;
+    transition: background-color 0.18s ease;
+}
+
+.menu-lateral-links a:hover,
+.menu-lateral-links a.ativo {
+    background: #660a18;
+}
+
+.menu-lateral-links a.ativo {
+    box-shadow: inset 3px 0 #f5c46b;
+}
+
+.menu-lateral-links .menu-lateral-sair {
+    margin-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0 0 8px 8px;
+}
+
+body.menu-lateral-aberto {
+    overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .menu-lateral-links a {
+        transition: none;
+    }
+}

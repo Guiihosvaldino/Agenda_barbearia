@@ -19,8 +19,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $_POST['acao'] == "perfil") {
     $nome = $_POST['nome'];
     $especialidade = $_POST['especialidade'];
     $email = $_POST['email'];
+    $almoco_inicio = !empty($_POST['almoco_inicio']) ? $_POST['almoco_inicio'] : null;
+    $almoco_fim = !empty($_POST['almoco_fim']) ? $_POST['almoco_fim'] : null;
 
-    if (atualizarPerfilProfissional($id, $nome, $especialidade, $email)) {
+    if (atualizarPerfilProfissional($id, $nome, $especialidade, $email, $almoco_inicio, $almoco_fim)) {
         $msgSucesso = "Perfil atualizado com sucesso!";
         $_SESSION['profissional_nome'] = $nome;
         $prof = buscarProfissionalPorId($id);
@@ -56,20 +58,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $_POST['acao'] == "senha") {
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
     <title>Meu Perfil</title>
 
 <style>
     body {
-        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        background-image: url('../imagem/FUNDO.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
         font-family: Arial, Helvetica, sans-serif;
         margin: 0;
         padding: 0;
         color: #fff;
         }
+    body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.45);
+        z-index: 0;
+    }
 
      .menu {
-    background: #0d2a52;
+    background: #380309;
     padding: 14px 25px;
     display: flex;
     gap: 25px;
@@ -88,9 +102,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $_POST['acao'] == "senha") {
 }
 
 .menu a:hover {
-    background: #1e3c72;
+    background: #660a18;
 }
 .container {
+    position: relative;
+    z-index: 1;
     background: white;
     max-width: 600px;
     margin: 40px auto;
@@ -100,7 +116,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $_POST['acao'] == "senha") {
     box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
 h1 {
-    color: #1e3c72;
+    color: #660a18;
     text-align: center;
 }
 form {
@@ -114,7 +130,7 @@ input {
     border: 1px solid #aaa;
 }
 button {
-    background: #1e3c72;
+    background: #660a18;
     color: white;
     padding: 12px;
     border: none;
@@ -124,7 +140,7 @@ button {
     font-weight: bold;
 }
 button:hover {
-    background: #16315c;
+    background: #480610;
 }
 .msg-sucesso {
     background: #d4edda;
@@ -146,9 +162,9 @@ button:hover {
 }
 .section-title {
     margin-top: 20px;
-    color: #1e3c72;
+    color: #660a18;
     font-size: 1.4em;
-    border-bottom: 2px solid #1e3c72;
+    border-bottom: 2px solid #660a18;
     padding-bottom: 5px;
 }
     .logo {
@@ -158,19 +174,44 @@ button:hover {
         margin-right: auto;
         display: block;
         }
+
+/* ========== RESPONSIVIDADE (CELULARES) ========== */
+@media (max-width: 768px) {
+    .container {
+        width: 90% !important;
+        max-width: none !important;
+        margin: 20px auto !important;
+        padding: 20px !important;
+    }
+    .menu {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 10px !important;
+        padding: 15px !important;
+    }
+    .menu a {
+        width: 100% !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+    }
+    .logo {
+        width: 100% !important;
+        max-width: 250px !important;
+        margin-bottom: -40px !important;
+    }
+    table {
+        display: block !important;
+        overflow-x: auto !important;
+        white-space: nowrap !important;
+    }
+}
 </style>
 
+    <link rel="stylesheet" href="../css/menu-lateral.css">
 </head>
 <body>
 
-<div class="menu">
-    <a href="profissional_home.php">🏠 Home</a>
-    <a href="profissional_agenda.php">📅 Minha Agenda</a>
-    <a href="profissional_perfil.php">👤 Meu Perfil</a>
-    <a href="profissional_estatistica.php">📊 Estatísticas</a>
-    <a href="profissional_agendar.php">➕ Novo Agendamento</a>
-    <a href="profissional_login.php">🚪 Sair</a>
-</div>
+<?php require __DIR__ . '/menu_lateral.php'; ?>
 
 
 <div class="container">
@@ -199,6 +240,12 @@ button:hover {
 
         <label>E-mail:</label>
         <input type="email" name="email" value="<?= $prof['email'] ?>" required>
+
+        <label>Início do Almoço:</label>
+        <input type="time" name="almoco_inicio" value="<?= !empty($prof['almoco_inicio']) ? date('H:i', strtotime($prof['almoco_inicio'])) : '' ?>">
+
+        <label>Fim do Almoço:</label>
+        <input type="time" name="almoco_fim" value="<?= !empty($prof['almoco_fim']) ? date('H:i', strtotime($prof['almoco_fim'])) : '' ?>">
 
         <button type="submit">Salvar Alterações</button>
     </form>

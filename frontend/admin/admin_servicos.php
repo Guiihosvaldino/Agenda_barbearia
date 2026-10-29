@@ -5,6 +5,12 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require_once("../../backend/admin.php");
+session_start();
+
+if (!isset($_SESSION['admin_id'])) {
+    header("Location: login_admin.php");
+    exit();
+}
 require_once("../../backend/servico.php"); // Crie funções para servico: listar, adicionar, editar, excluir
 
 // Mensagens
@@ -16,13 +22,14 @@ $msgErro = "";
 // -----------------------------
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['acao']) && $_POST['acao'] == "novo") {
 
-    $nome   = $_POST['nome'];
+    $nome    = $_POST['nome'];
     $duracao = $_POST['duracao'];
-    $valor  = $_POST['valor'];
+    $valor   = $_POST['valor'];
+    $cor     = $_POST['cor'] ?? '#660a18';
 
     if ($nome && $duracao && $valor) {
 
-        if (adicionarServico($nome, $duracao, $valor)) {
+        if (adicionarServico($nome, $duracao, $valor, $cor)) {
             $msgSucesso = "Serviço cadastrado com sucesso!";
         } else {
             $msgErro = "Erro ao cadastrar serviço!";
@@ -43,8 +50,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['acao']) && $_POST['aca
     $nome    = $_POST['nome'];
     $duracao = $_POST['duracao'];
     $valor   = $_POST['valor'];
+    $cor     = $_POST['cor'] ?? '#660a18';
 
-    if (editarServico($id, $nome, $duracao, $valor)) {
+    if (editarServico($id, $nome, $duracao, $valor, $cor)) {
         $msgSucesso = "Serviço atualizado com sucesso!";
     } else {
         $msgErro = "Erro ao atualizar serviço!";
@@ -74,7 +82,8 @@ $servicos = listarServicosAdmin();
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
     <title>Serviços - Admin 💈</title>
 
 <style>
@@ -82,13 +91,24 @@ $servicos = listarServicosAdmin();
 
 body {
     margin: 0;
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    background-image: url('../imagem/FUNDO.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     font-family: 'Segoe UI', Arial, sans-serif;
     color: #fff;
 }
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 0;
+}
 
 .menu {
-    background: #0d2a52;
+    background: #380309;
     padding: 14px 25px;
     display: flex;
     gap: 25px;
@@ -106,10 +126,12 @@ body {
 }
 
 .menu a:hover {
-    background: #1e3c72;
+    background: #660a18;
 }
 
 .container {
+    position: relative;
+    z-index: 1;
     background: #ffffff;
     max-width: 850px;
     margin: 40px auto;
@@ -121,7 +143,7 @@ body {
 
 h2 {
     text-align: center;
-    color: #1e3c72;
+    color: #660a18;
     margin-bottom: 30px;
     font-size: 2em;
 }
@@ -142,7 +164,7 @@ input {
 
 button {
     padding: 12px;
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    background: linear-gradient(135deg, #660a18, #8a1224);
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -185,7 +207,7 @@ table {
 }
 
 th {
-    background: #1e3c72;
+    background: #660a18;
     color: #fff;
     padding: 12px;
 }
@@ -216,29 +238,54 @@ tr:nth-child(odd) { background: #ffffff; }
 }
     .logo {
         width: 350px;   /* quase o tamanho do formulário */
-        margin-bottom: -100px;
+        margin-bottom: -70px;
         margin-left: auto;
         margin-right: auto;
         display: block;
         }
 
+
+/* ========== RESPONSIVIDADE (CELULARES) ========== */
+@media (max-width: 768px) {
+    .container {
+        width: 90% !important;
+        max-width: none !important;
+        margin: 20px auto !important;
+        padding: 20px !important;
+    }
+    .menu {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 10px !important;
+        padding: 15px !important;
+    }
+    .menu a {
+        width: 100% !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+    }
+    .logo {
+        width: 100% !important;
+        max-width: 250px !important;
+        margin-bottom: -40px !important;
+    }
+    table {
+        display: block !important;
+        overflow-x: auto !important;
+        white-space: nowrap !important;
+    }
+}
 </style>
+    <link rel="stylesheet" href="../css/menu-lateral.css">
 </head>
 
 <body>
 
-<div class="menu">
-    <a href="agenda.php">📅 Agenda</a>
-    <a href="financeiro.php">💰 Financeiro</a>
-    <a href="admin_profissionais.php">👤 Profissionais</a>
-    <a href="admin_servicos.php">💈 Serviços</a>
-    <a href="admin_funcionamento.php">⏰ Funcionamento</a>
-    <a href="login_admin.php">🚪 Sair</a>
-</div>
+<?php require __DIR__ . '/menu_lateral.php'; ?>
 
 <div class="container">
     <img src="../../frontend/imagem/logo1.png" class="logo">
-    <h2>💈 Cadastro de Serviços</h2>
+    <h2>Cadastro de Serviços</h2>
 
     <?php if ($msgSucesso): ?>
         <div class="msg-sucesso"><?= $msgSucesso ?></div>
@@ -256,6 +303,11 @@ tr:nth-child(odd) { background: #ffffff; }
         <input type="text" name="nome" placeholder="Nome do Serviço" required>
         <input type="number" name="duracao" placeholder="Duração (minutos)" required>
         <input type="text" name="valor" placeholder="Valor (R$)" required>
+        
+        <div style="display: flex; align-items: center; gap: 15px; background: #f8f9fa; padding: 10px 15px; border-radius: 8px; border: 1px solid #ccc;">
+            <label style="font-weight: bold; color: #660a18; font-size: 0.95em;">Cor de Destaque na Agenda:</label>
+            <input type="color" name="cor" value="#660a18" style="width: 60px; height: 35px; padding: 0; border: none; border-radius: 4px; cursor: pointer;">
+        </div>
 
         <button type="submit">Cadastrar Serviço</button>
     </form>
@@ -273,8 +325,11 @@ tr:nth-child(odd) { background: #ffffff; }
 
         <?php foreach ($servicos as $s): ?>
         <tr>
-            <td><?= $s['nome'] ?></td>
-            <td><?= $s['duracao'] ?></td>
+            <td>
+                <span style="display: inline-block; width: 14px; height: 14px; border-radius: 50%; background: <?= !empty($s['cor']) ? $s['cor'] : '#660a18' ?>; margin-right: 8px; vertical-align: middle; box-shadow: 0 1px 3px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.6);"></span>
+                <strong><?= htmlspecialchars($s['nome']) ?></strong>
+            </td>
+            <td><?= htmlspecialchars($s['duracao']) ?></td>
             <td><?= number_format($s['valor'],2,',','.') ?></td>
 
             <td>
@@ -318,6 +373,11 @@ if (isset($_GET['editar'])):
     <input type="text" name="valor" 
            value="<?= $serv['valor'] ?>" 
            placeholder="Valor (R$)" required>
+
+    <div style="display: flex; align-items: center; gap: 15px; background: #f8f9fa; padding: 10px 15px; border-radius: 8px; border: 1px solid #ccc;">
+        <label style="font-weight: bold; color: #660a18; font-size: 0.95em;">Cor de Destaque na Agenda:</label>
+        <input type="color" name="cor" value="<?= htmlspecialchars($serv['cor'] ?? '#660a18') ?>" style="width: 60px; height: 35px; padding: 0; border: none; border-radius: 4px; cursor: pointer;">
+    </div>
 
     <button type="submit">Salvar Alterações</button>
 </form>

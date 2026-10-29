@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
     <title>Novo Cliente - Barbearia</title>
 
     <style>
         body {
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            background-image: url('imagem/FUNDO.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -15,8 +20,17 @@
             align-items: center;
             min-height: 100vh;
         }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: 0;
+        }
 
         .container {
+            position: relative;
+            z-index: 1;
             background: #ffffff;
             width: 550px;
             padding: 30px 28px;
@@ -28,7 +42,7 @@
             text-align: center;
             margin-top: 0;
             margin-bottom: 25px;
-            color: #1e3c72;
+            color: #660a18;
             font-size: 1.7em;
             font-weight: 700;
         }
@@ -52,14 +66,14 @@
         }
 
         input:focus {
-            border-color: #1e3c72;
+            border-color: #660a18;
             background: #f2f6ff;
         }
 
         button {
             width: 100%;
             padding: 12px;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            background: linear-gradient(135deg, #660a18, #8a1224);
             border: none;
             border-radius: 8px;
             color: white;
@@ -71,13 +85,13 @@
 
         button:hover {
             transform: scale(1.03);
-            background: linear-gradient(135deg, #2a5298, #1e3c72);
+            background: linear-gradient(135deg, #8a1224, #660a18);
         }
 
         .voltar {
             display: block;
             text-align: center;
-            background: #1e3c72;
+            background: #660a18;
             color: #fff;
             padding: 10px;
             border-radius: 8px;
@@ -88,7 +102,7 @@
         }
 
         .voltar:hover {
-            background: #16315c;
+            background: #480610;
             transform: scale(1.02);
         }
             .logo {
@@ -98,7 +112,38 @@
         margin-right: auto;
         display: block;
         }
-    </style>
+    
+/* ========== RESPONSIVIDADE (CELULARES) ========== */
+@media (max-width: 768px) {
+    .container {
+        width: 90% !important;
+        max-width: none !important;
+        margin: 20px auto !important;
+        padding: 20px !important;
+    }
+    .menu {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 10px !important;
+        padding: 15px !important;
+    }
+    .menu a {
+        width: 100% !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+    }
+    .logo {
+        width: 100% !important;
+        max-width: 250px !important;
+        margin-bottom: -40px !important;
+    }
+    table {
+        display: block !important;
+        overflow-x: auto !important;
+        white-space: nowrap !important;
+    }
+}
+</style>
 
 </head>
 <body>

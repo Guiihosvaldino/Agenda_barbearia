@@ -34,14 +34,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <title>Editar Agendamento</title>
     <style>
-        body { background: #1e3c72; font-family: sans-serif; color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        body { background: #660a18; font-family: sans-serif; color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
         .card { background: white; color: #333; padding: 30px; border-radius: 12px; width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-        h2 { color: #1e3c72; margin-top: 0; }
+        h2 { color: #660a18; margin-top: 0; }
         label { display: block; margin-top: 15px; font-weight: bold; }
         select, input { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
         .btn-salvar { background: #28a745; color: white; border: none; padding: 12px; width: 100%; border-radius: 6px; margin-top: 20px; cursor: pointer; font-size: 1em; }
         .btn-cancelar { display: block; text-align: center; margin-top: 10px; color: #666; text-decoration: none; font-size: 0.9em; }
-        .info-cliente { background: #f1f4f8; padding: 10px; border-radius: 6px; margin-bottom: 10px; border-left: 4px solid #1e3c72; }
+        .info-cliente { background: #f1f4f8; padding: 10px; border-radius: 6px; margin-bottom: 10px; border-left: 4px solid #660a18; }
     </style>
 </head>
 <body>

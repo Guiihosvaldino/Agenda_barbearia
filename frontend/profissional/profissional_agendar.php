@@ -36,20 +36,15 @@ $servicos = listarServicos();
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
     <title>Novo Agendamento</title>
+    <link rel="stylesheet" href="../css/menu-lateral.css">
 </head>
 <body>
 
 <!-- MENU SUPERIOR -->
-<div class="menu">
-    <a href="profissional_home.php">🏠 Home</a>
-    <a href="profissional_agenda.php">📅 Minha Agenda</a>
-    <a href="profissional_perfil.php">👤 Meu Perfil</a>
-    <a href="profissional_estatistica.php">📊 Estatísticas</a>
-    <a href="profissional_agendar.php">➕ Novo Agendamento</a>
-    <a href="profissional_login.php">🚪 Sair</a>
-</div>
+<?php require __DIR__ . '/menu_lateral.php'; ?>
 
 <div class="container">
         <img src="../../frontend/imagem/logo1.png" class="logo">
@@ -115,15 +110,26 @@ $servicos = listarServicos();
 
 <style>
     body {
-        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        background-image: url('../imagem/FUNDO.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
         font-family: Arial, Helvetica, sans-serif;
         margin: 0;
         padding: 0;
         color: #fff;
         }
+    body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.45);
+        z-index: 0;
+    }
 
      .menu {
-    background: #0d2a52;
+    background: #380309;
     padding: 14px 25px;
     display: flex;
     gap: 25px;
@@ -142,11 +148,13 @@ $servicos = listarServicos();
 }
 
 .menu a:hover {
-    background: #1e3c72;
+    background: #660a18;
 }
 
 
 .container {
+    position: relative;
+    z-index: 1;
     background: white;
     max-width: 600px;
     margin: 40px auto;
@@ -158,7 +166,7 @@ $servicos = listarServicos();
 
 h2 {
     text-align: center;
-    color: #1e3c72;
+    color: #660a18;
     margin-bottom: 25px;
 }
 
@@ -196,7 +204,7 @@ h2 {
 }
 .form-busca button {
     padding: 10px 16px;
-    background: #1e3c72;
+    background: #660a18;
     color: #fff;
     border: none;
     border-radius: 6px;
@@ -204,7 +212,7 @@ h2 {
     cursor: pointer;
 }
 .form-busca button:hover {
-    background: #2a5298;
+    background: #8a1224;
 }
 
 /* FORM AGENDAR */
@@ -226,7 +234,7 @@ h2 {
 /* BOTÃO PRINCIPAL */
 .form-agendar button {
     width: 100%;
-    background: #1e3c72;
+    background: #660a18;
     color: white;
     padding: 14px;
     border-radius: 8px;
@@ -236,7 +244,7 @@ h2 {
     cursor: pointer;
 }
 .form-agendar button:hover {
-    background: #2a5298;
+    background: #8a1224;
 }
        .logo {
         width: 350px;   /* quase o tamanho do formulário */
@@ -245,6 +253,37 @@ h2 {
         margin-right: auto;
         display: block;
         }
+
+/* ========== RESPONSIVIDADE (CELULARES) ========== */
+@media (max-width: 768px) {
+    .container {
+        width: 90% !important;
+        max-width: none !important;
+        margin: 20px auto !important;
+        padding: 20px !important;
+    }
+    .menu {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 10px !important;
+        padding: 15px !important;
+    }
+    .menu a {
+        width: 100% !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+    }
+    .logo {
+        width: 100% !important;
+        max-width: 250px !important;
+        margin-bottom: -40px !important;
+    }
+    table {
+        display: block !important;
+        overflow-x: auto !important;
+        white-space: nowrap !important;
+    }
+}
 </style>
 
 

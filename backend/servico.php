@@ -2,6 +2,17 @@
 require_once("conexao.php"); // Certifique-se de que este arquivo conecta ao seu banco de dados usando $pdo
 
 // -----------------------------
+// AUTO-MIGRAÇÃO: Adiciona a coluna de cor se não existir
+// -----------------------------
+try {
+    $pdo->query("SELECT cor FROM servico LIMIT 1");
+} catch (Exception $e) {
+    try {
+        $pdo->exec("ALTER TABLE servico ADD COLUMN cor VARCHAR(7) DEFAULT '#1e3c72'");
+    } catch (Exception $ex) {}
+}
+
+// -----------------------------
 // LISTAR TODOS OS SERVIÇOS
 // -----------------------------
 function listarServicosAdmin() {
@@ -23,19 +34,19 @@ function buscarServicoPorId($id) {
 // -----------------------------
 // ADICIONAR SERVIÇO
 // -----------------------------
-function adicionarServico($nome, $duracao, $valor) {
+function adicionarServico($nome, $duracao, $valor, $cor = '#1e3c72') {
     global $pdo;
-    $stmt = $pdo->prepare("INSERT INTO servico (nome, duracao, valor) VALUES (?, ?, ?)");
-    return $stmt->execute([$nome, $duracao, $valor]);
+    $stmt = $pdo->prepare("INSERT INTO servico (nome, duracao, valor, cor) VALUES (?, ?, ?, ?)");
+    return $stmt->execute([$nome, $duracao, $valor, $cor]);
 }
 
 // -----------------------------
 // EDITAR SERVIÇO
 // -----------------------------
-function editarServico($id, $nome, $duracao, $valor) {
+function editarServico($id, $nome, $duracao, $valor, $cor = '#1e3c72') {
     global $pdo;
-    $stmt = $pdo->prepare("UPDATE servico SET nome = ?, duracao = ?, valor = ? WHERE id_servico = ?");
-    return $stmt->execute([$nome, $duracao, $valor, $id]);
+    $stmt = $pdo->prepare("UPDATE servico SET nome = ?, duracao = ?, valor = ?, cor = ? WHERE id_servico = ?");
+    return $stmt->execute([$nome, $duracao, $valor, $cor, $id]);
 }
 
 // -----------------------------

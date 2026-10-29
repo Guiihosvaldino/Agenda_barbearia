@@ -6,7 +6,7 @@ require_once("../backend/agenda.php");
 session_start();
 
 if (!isset($_SESSION['cliente_id'])) {
-    header("Location: ../index.php?erro=login");
+    header("Location: index.php?erro=login");
     exit;
 }
 
@@ -55,20 +55,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
     <title>Agendar Horário - Barbearia</title>
 
     <style>
-        body {
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
+                body {
+            background-image: url('imagem/FUNDO.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Arial, sans-serif;
-            min-height: 100vh;
             display: flex;
+            align-items: center;
             justify-content: center;
-            align-items: flex-start;
-            padding-top: 40px;
+            min-height: 100vh;
+            color: #fff;
         }
 
         .container {
@@ -82,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         h2 {
             text-align: center;
             margin-top: 0;
-            color: #1e3c72;
+            color: #660a18;
             font-size: 1.8em;
             margin-bottom: 20px;
             font-weight: 700;
@@ -114,14 +119,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         select:focus, input:focus {
-            border-color: #1e3c72;
-            background: #eef3ff;
+            border-color: #660a18;
+            background: #fdf2f4;
         }
 
         button {
             width: 100%;
             padding: 12px;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            background: linear-gradient(135deg, #660a18, #8a1224);
             border: none;
             border-radius: 8px;
             color: white;
@@ -133,7 +138,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         button:hover {
             transform: scale(1.03);
-            background: linear-gradient(135deg, #2a5298, #1e3c72);
+            background: linear-gradient(135deg, #8a1224, #660a18);
         }
 
         .erro {
@@ -151,7 +156,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             display: block;
             text-align: center;
             padding: 10px;
-            background: #1e3c72;
+            background: #660a18;
             color: #fff;
             text-decoration: none;
             font-weight: bold;
@@ -161,7 +166,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         .voltar:hover {
-            background: #16315c;
+            background: #480610;
             transform: scale(1.02);
         }
         .calendar-header {
@@ -173,7 +178,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 .calendar-header button {
-    background: #1e3c72;
+    background: #660a18;
     color: white;
     border: none;
     border-radius: 6px;
@@ -196,12 +201,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     padding: 10px;
     text-align: center;
     border-radius: 8px;
-    background: #eee;
+    background: #660a18;
+    color: white;
     cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.dia:hover:not(.passado):not(.fechado) {
+    background: #8a1224;
+    transform: scale(1.05);
 }
 
 .dia.passado {
-    background: #ddd;
+    background: #e0e0e0;
     color: #999;
 }
 
@@ -212,8 +225,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 .dia.selecionado {
-    background: #2a5298;
+    background: #8a1224;
     color: white;
+    box-shadow: 0 0 8px rgba(138, 18, 36, 0.7);
 }
 .meus-horarios {
     display: block;
@@ -233,7 +247,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     transform: scale(1.02);
 }
 
-    </style>
+    
+/* ========== RESPONSIVIDADE (CELULARES) ========== */
+@media (max-width: 768px) {
+    .container {
+        width: 90% !important;
+        max-width: none !important;
+        margin: 20px auto !important;
+        padding: 20px !important;
+    }
+    .menu {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 10px !important;
+        padding: 15px !important;
+    }
+    .menu a {
+        width: 100% !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+    }
+    .logo {
+        width: 100% !important;
+        max-width: 250px !important;
+        margin-bottom: -40px !important;
+    }
+    table {
+        display: block !important;
+        overflow-x: auto !important;
+        white-space: nowrap !important;
+    }
+}
+</style>
 
 </head>
 <body>
