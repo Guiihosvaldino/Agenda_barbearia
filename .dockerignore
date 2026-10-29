@@ -1,0 +1,7 @@
+.git
+.env
+.env.*
+!.env.example
+docker-compose.yml
+documentos
+teste_conexao.php

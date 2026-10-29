@@ -1,24 +1,24 @@
-version: "3.8"
-
 services:
   php-apache:
-    image: php:8.2-apache
-    container_name: barbearia-php
+    build: .
     ports:
       - "8080:80"
-    volumes:
-      - ./frontend:/var/www/html
-      - ./backend:/var/www/html/backend
+    environment:
+      PORT: 80
+      MYSQLHOST: db
+      MYSQLPORT: 3306
+      MYSQLUSER: root
+      MYSQLPASSWORD: ${MYSQLPASSWORD:-root}
+      MYSQLDATABASE: ${MYSQLDATABASE:-barbearia_agenda}
     depends_on:
       - db
 
   db:
     image: mysql:8.0
-    container_name: barbearia-db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: barbearia
+      MYSQL_ROOT_PASSWORD: ${MYSQLPASSWORD:-root}
+      MYSQL_DATABASE: ${MYSQLDATABASE:-barbearia_agenda}
     ports:
       - "3306:3306"
     volumes:
@@ -32,7 +32,7 @@ services:
       - "8081:80"
     environment:
       PMA_HOST: db
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: ${MYSQLPASSWORD:-root}
 
 volumes:
   db_data:
