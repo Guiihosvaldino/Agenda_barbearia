@@ -1,6 +1,16 @@
 #!/bin/sh
 set -eu
 
+for module_file in /etc/apache2/mods-enabled/mpm_*.load; do
+    [ -e "$module_file" ] || continue
+    module="${module_file##*/}"
+    module="${module%.load}"
+    [ "$module" = "mpm_prefork" ] || a2dismod "$module"
+done
+
+a2enmod mpm_prefork
+test "$(apache2ctl -M 2>/dev/null | grep -c 'mpm_')" -eq 1
+
 port="${PORT:-8080}"
 
 case "$port" in
