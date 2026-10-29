@@ -49,11 +49,11 @@ $db = obterVariavelAmbiente(['MYSQLDATABASE', 'DB_NAME', 'MYSQL_DATABASE'], 'bar
 
 try {
     $pdo = new PDO(
-        "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4",
-        $user,
-        $pass,
-        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
-    );
+    "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4;proto=tcp",
+    $user,
+    $pass,
+    [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     error_log("Erro ao conectar ao banco de dados: " . $e->getMessage());
